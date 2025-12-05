@@ -5,7 +5,7 @@ vi.mock('./worktree.js', () => ({
   isValidWorktree: (path: string) => path.includes('/valid') || path === '/main',
   getWorktreeInfo: (path: string) => ({
     path,
-    branch: path.includes('feature') ? 'feature' : path.includes('agent') ? 'agent/claude' : 'main',
+    branch: path.includes('feature') ? 'feature' : path.includes('peek') ? 'peek-ui-review' : 'main',
     commit: 'abc1234',
     isMain: path === '/main',
     isBare: false
@@ -13,7 +13,7 @@ vi.mock('./worktree.js', () => ({
   listWorktrees: () => [
     { path: '/main', branch: 'main', commit: 'abc1234', isMain: true, isBare: false },
     { path: '/valid/feature', branch: 'feature', commit: 'def5678', isMain: false, isBare: false },
-    { path: '/valid/agent-claude', branch: 'agent/claude', commit: 'ghi9012', isMain: false, isBare: false }
+    { path: '/valid/peek-ui-review', branch: 'peek-ui-review', commit: 'ghi9012', isMain: false, isBare: false }
   ]
 }))
 
@@ -66,7 +66,7 @@ describe('PeekCore', () => {
     it('prevents concurrent switches', async () => {
       // Start two switches simultaneously
       const switch1 = core.switch('/valid/feature')
-      const switch2 = core.switch('/valid/agent-claude')
+      const switch2 = core.switch('/valid/peek-ui-review')
 
       const [result1, result2] = await Promise.all([switch1, switch2])
 
@@ -139,9 +139,9 @@ describe('PeekCore', () => {
       expect(core.getCurrent()).toBe('/valid/feature')
     })
 
-    it('resolves agent name to agent/ prefixed branch', async () => {
-      await core.switch('claude')
-      expect(core.getCurrent()).toBe('/valid/agent-claude')
+    it('resolves agent name to prefixed branch', async () => {
+      await core.switch('ui-review')
+      expect(core.getCurrent()).toBe('/valid/peek-ui-review')
     })
   })
 
@@ -152,8 +152,8 @@ describe('PeekCore', () => {
     })
 
     it('finds agent branch by short name', () => {
-      const result = core.find('claude')
-      expect(result?.branch).toBe('agent/claude')
+      const result = core.find('ui-review')
+      expect(result?.branch).toBe('peek-ui-review')
     })
 
     it('returns undefined for unknown branch', () => {
