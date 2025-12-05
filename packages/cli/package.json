@@ -1,6 +1,6 @@
 {
   "name": "@ekarya0x/cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Any agent, any branch, one command - CLI for peek",
   "type": "module",
   "bin": {
@@ -31,8 +31,6 @@
     "dev-server",
     "ai",
     "agent",
-    "claude",
-    "cursor",
     "dx",
     "hot-reload"
   ],
