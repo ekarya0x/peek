@@ -49,7 +49,7 @@ export async function switchCmd(target: string, port?: string): Promise<void> {
     }
   } catch {
     console.log(`Switched to ${core.getCurrent()}`)
-    console.log('Note: Dev server not responding at port ' + port)
+    console.log('Note: Dev server not responding at port ' + resolvedPort)
   }
 }
 
