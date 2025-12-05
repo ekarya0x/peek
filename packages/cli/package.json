@@ -1,0 +1,29 @@
+{
+  "name": "@peek/cli",
+  "version": "1.0.0",
+  "description": "Live worktree switcher for the agent era",
+  "type": "module",
+  "bin": {
+    "peek": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@peek/middleware": "workspace:*",
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "vitest": "^1.0.0"
+  },
+  "license": "MIT"
+}
+
