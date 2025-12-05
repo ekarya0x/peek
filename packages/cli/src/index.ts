@@ -9,14 +9,18 @@ import { removeCmd } from './commands/remove.js'
 import { cleanCmd } from './commands/clean.js'
 import { scopeCmd } from './commands/scope.js'
 import { initCmd } from './commands/init.js'
+import { startCmd } from './commands/start.js'
+import { saveCmd } from './commands/save.js'
+import { discardCmd } from './commands/discard.js'
 
 const program = new Command()
 
 program
   .name('peek')
-  .description('Live worktree switcher for the agent era')
+  .description('Any agent, any branch, one command')
   .version('1.0.0')
 
+// Default command - switch or show status
 program
   .argument('[target]', 'Worktree path, branch name, or "." for main')
   .option('-p, --port <port>', 'Dev server port', '3000')
@@ -27,6 +31,39 @@ program
     }
     await switchCmd(target, opts.port)
   })
+
+// ============================================
+// Agent Workflow Commands
+// ============================================
+
+program
+  .command('start <name>')
+  .alias('s')
+  .description('Start new agent session (creates worktree)')
+  .option('--base <ref>', 'Base branch/commit', 'HEAD')
+  .option('--at <path>', 'Custom worktree path')
+  .option('-p, --port <port>', 'Dev server port', '3000')
+  .action(startCmd)
+
+program
+  .command('save')
+  .description('Save agent work (merge and optionally cleanup)')
+  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('--keep', 'Keep worktree after merge')
+  .option('-m, --message <msg>', 'Commit message for uncommitted changes')
+  .option('--push', 'Push after merge')
+  .action(saveCmd)
+
+program
+  .command('discard')
+  .description('Discard agent work (remove worktree and branch)')
+  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-f, --force', 'Skip confirmation')
+  .action(discardCmd)
+
+// ============================================
+// Core Commands
+// ============================================
 
 program
   .command('list')
@@ -48,6 +85,10 @@ program
   .action(async (opts) => {
     await switchCmd('-', opts.port)
   })
+
+// ============================================
+// Worktree Management
+// ============================================
 
 program
   .command('create <branch>')
@@ -72,10 +113,14 @@ program
   .option('-f, --force', 'Force remove')
   .action(cleanCmd)
 
+// ============================================
+// Utilities
+// ============================================
+
 program
   .command('scope [path]')
-  .alias('hs')
-  .description('Output hierarchical scope for Cursor')
+  .alias('ctx')
+  .description('Copy project context to clipboard (for AI agents)')
   .option('-o, --output', 'Print to stdout instead of copying')
   .option('--depth <n>', 'Max directory depth', '4')
   .action(scopeCmd)
@@ -86,4 +131,3 @@ program
   .action(initCmd)
 
 program.parse()
-

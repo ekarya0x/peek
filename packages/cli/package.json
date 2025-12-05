@@ -1,7 +1,7 @@
 {
-  "name": "@peek/cli",
-  "version": "1.0.0",
-  "description": "Live worktree switcher for the agent era",
+  "name": "@ekarya0x/cli",
+  "version": "0.1.0",
+  "description": "Any agent, any branch, one command - CLI for peek",
   "type": "module",
   "bin": {
     "peek": "./dist/index.js"
@@ -17,13 +17,30 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@peek/middleware": "workspace:*",
+    "@ekarya0x/middleware": "workspace:*",
     "commander": "^12.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
     "vitest": "^1.0.0"
   },
+  "keywords": [
+    "git",
+    "worktree", 
+    "cli",
+    "dev-server",
+    "ai",
+    "agent",
+    "claude",
+    "cursor",
+    "dx",
+    "hot-reload"
+  ],
+  "homepage": "https://github.com/ekarya0x/peek",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ekarya0x/peek"
+  },
+  "bugs": "https://github.com/ekarya0x/peek/issues",
   "license": "MIT"
 }
-

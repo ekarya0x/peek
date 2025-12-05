@@ -1,4 +1,4 @@
-import { PeekCore, isValidWorktree } from '@peek/middleware'
+import { PeekCore, isValidWorktree } from '@ekarya0x/middleware'
 
 export async function switchCmd(target: string, port: string): Promise<void> {
   const core = new PeekCore()

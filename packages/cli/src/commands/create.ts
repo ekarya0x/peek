@@ -1,5 +1,5 @@
 import { join } from 'node:path'
-import { createWorktree } from '@peek/middleware'
+import { createWorktree } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface CreateOptions {

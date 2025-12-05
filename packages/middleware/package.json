@@ -1,7 +1,7 @@
 {
-  "name": "@peek/middleware",
-  "version": "1.0.0",
-  "description": "Core worktree switching logic for peek",
+  "name": "@ekarya0x/middleware",
+  "version": "0.1.0",
+  "description": "Core worktree switching logic for peek - any agent, any branch, one command",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,6 +23,18 @@
   "devDependencies": {
     "vitest": "^1.0.0"
   },
+  "keywords": [
+    "git",
+    "worktree",
+    "middleware",
+    "ai",
+    "agent"
+  ],
+  "homepage": "https://github.com/ekarya0x/peek",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ekarya0x/peek"
+  },
+  "bugs": "https://github.com/ekarya0x/peek/issues",
   "license": "MIT"
 }
-

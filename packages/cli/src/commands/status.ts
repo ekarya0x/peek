@@ -1,4 +1,4 @@
-import { PeekCore } from '@peek/middleware'
+import { PeekCore } from '@ekarya0x/middleware'
 
 export async function statusCmd(): Promise<void> {
   const core = new PeekCore()

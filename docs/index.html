@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>peek — Your dev server, any branch, one command</title>
+  <title>peek — Any agent, any branch, one command</title>
+  <meta name="description" content="Zero-downtime branch switching for AI-assisted development. Review agent work instantly without restarting your dev server.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Berkeley+Mono,JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,9 +18,9 @@
     <a href="/" class="logo">peek</a>
     <div class="nav-links">
       <a href="#start">Start</a>
+      <a href="#workflow">Workflow</a>
       <a href="#cli">CLI</a>
-      <a href="#api">API</a>
-      <a href="#contact">Contact</a>
+      <a href="#frameworks">Frameworks</a>
       <button id="theme-toggle" aria-label="Toggle theme">
         <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="5"/>
@@ -29,7 +30,7 @@
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
       </button>
-      <a href="https://github.com/nicholascostadev/peek" target="_blank" class="github-star">
+      <a href="https://github.com/ekarya0x/peek" target="_blank" class="github-star">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
         </svg>
@@ -44,7 +45,7 @@
         <h1 class="hero-title">
           <span class="hero-title-text">peek</span>
         </h1>
-        <p class="tagline">Your dev server, any branch, one command.</p>
+        <p class="tagline">Any agent, any branch, one command.</p>
         <div class="hero-code">
           <div class="terminal-window">
             <div class="terminal-header">
@@ -53,10 +54,18 @@
               <span class="terminal-dot green"></span>
             </div>
             <div class="terminal-body">
-              <pre><code><span class="prompt">$</span> peek agent/refactor-47</code></pre>
+              <pre><code><span class="prompt">$</span> peek start claude
+<span class="output">🚀 Starting agent session: agent/claude
+   ✓ Worktree created
+   ✓ Dev server switched</span>
+
+<span class="prompt">$</span> peek save
+<span class="output">💾 Saving agent work...
+   ✓ Merged to main
+   ✓ Worktree cleaned</span></code></pre>
             </div>
           </div>
-          <p class="hero-caption">Browser updates. Instantly.</p>
+          <p class="hero-caption">Zero downtime. Zero checkout. Browser updates instantly.</p>
         </div>
       </div>
     </section>
@@ -82,7 +91,7 @@
           </svg>
         </div>
         <h3>No checkout</h3>
-        <p>Your main branch untouched. Context preserved.</p>
+        <p>Main branch untouched. Context preserved.</p>
       </div>
       <div class="feature">
         <div class="feature-icon">
@@ -93,106 +102,251 @@
           </svg>
         </div>
         <h3>Agent ready</h3>
-        <p>Built for reviewing AI-generated code at speed.</p>
+        <p>Built for Claude, Cursor, Aider—any AI agent.</p>
+      </div>
+    </section>
+
+    <section class="problem-section">
+      <h2>The Problem</h2>
+      <p class="section-subtitle">AI writes code faster than humans review it.</p>
+      <div class="problem-box">
+        <pre><code><span class="comment"># Every agent review costs 2 minutes:</span>
+<span class="prompt">$</span> git stash
+<span class="prompt">$</span> git checkout agent/feature-47
+<span class="prompt">$</span> npm run dev
+<span class="comment"># ...wait for server...</span>
+<span class="comment"># ...review changes...</span>
+<span class="prompt">$</span> git checkout main
+<span class="prompt">$</span> npm run dev
+<span class="prompt">$</span> git stash pop
+
+<span class="comment"># At 20 reviews/day = 40 minutes lost</span></code></pre>
       </div>
     </section>
 
     <section id="start" class="docs">
-      <h2>Start</h2>
+      <h2>Quickstart</h2>
       <div class="step">
         <span class="step-num">1</span>
         <div class="step-content">
           <p>Install</p>
-          <pre><code>npm install -D @peek/vite-plugin</code></pre>
+          <pre><code>npm install -D @ekarya0x/cli @ekarya0x/vite-plugin</code></pre>
         </div>
       </div>
       <div class="step">
         <span class="step-num">2</span>
         <div class="step-content">
           <p>Configure</p>
-          <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@peek/vite-plugin'</span>
+          <div class="tabs">
+            <button class="tab active" data-tab="vite">Vite</button>
+            <button class="tab" data-tab="next">Next.js</button>
+          </div>
+          <div class="tab-content active" id="vite-config">
+            <pre><code><span class="comment">// vite.config.ts</span>
+<span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@ekarya0x/vite-plugin'</span>
 
 <span class="kw">export default</span> {
   plugins: [peek()]
 }</code></pre>
+          </div>
+          <div class="tab-content" id="next-config">
+            <pre><code><span class="comment">// next.config.ts</span>
+<span class="kw">import</span> withPeek <span class="kw">from</span> <span class="str">'@ekarya0x/next-plugin'</span>
+
+<span class="kw">export default</span> withPeek()({
+  <span class="comment">// your config</span>
+})</code></pre>
+          </div>
         </div>
       </div>
       <div class="step">
         <span class="step-num">3</span>
         <div class="step-content">
           <p>Use</p>
-          <pre><code><span class="prompt">$</span> peek agent/feature
-<span class="prompt">$</span> peek .          <span class="comment"># back to main</span></code></pre>
+          <pre><code><span class="prompt">$</span> peek start claude     <span class="comment"># start agent session</span>
+<span class="prompt">$</span> peek scope            <span class="comment"># copy context for agent</span>
+<span class="prompt">$</span> peek save             <span class="comment"># merge when happy</span></code></pre>
         </div>
       </div>
     </section>
 
+    <section id="workflow" class="docs">
+      <h2>Agent Workflow</h2>
+      <p class="section-subtitle">The recommended flow for AI-assisted development.</p>
+      
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <div class="workflow-icon">🚀</div>
+          <h3>1. Start Session</h3>
+          <pre><code><span class="prompt">$</span> peek start claude</code></pre>
+          <p>Creates isolated worktree at <code>/tmp/peek/agent-claude</code></p>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="workflow-icon">📋</div>
+          <h3>2. Share Context</h3>
+          <pre><code><span class="prompt">$</span> peek scope</code></pre>
+          <p>Copies project structure to clipboard for your agent</p>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="workflow-icon">👀</div>
+          <h3>3. Review Live</h3>
+          <p>Browser shows agent's changes in real-time</p>
+        </div>
+        
+        <div class="workflow-step">
+          <div class="workflow-icon">✅</div>
+          <h3>4. Save or Discard</h3>
+          <pre><code><span class="prompt">$</span> peek save      <span class="comment"># merge to main</span>
+<span class="prompt">$</span> peek discard   <span class="comment"># abandon changes</span></code></pre>
+        </div>
+      </div>
+
+      <h3>Multiple Agents</h3>
+      <p>Run multiple agents simultaneously:</p>
+      <pre><code><span class="prompt">$</span> peek start claude    <span class="comment"># /tmp/peek/agent-claude</span>
+<span class="prompt">$</span> peek start cursor    <span class="comment"># /tmp/peek/agent-cursor</span>
+<span class="prompt">$</span> peek start aider     <span class="comment"># /tmp/peek/agent-aider</span>
+
+<span class="prompt">$</span> peek claude          <span class="comment"># switch to Claude's work</span>
+<span class="prompt">$</span> peek cursor          <span class="comment"># switch to Cursor's work</span>
+<span class="prompt">$</span> peek .               <span class="comment"># back to main</span></code></pre>
+    </section>
+
     <section id="cli" class="docs">
-      <h2>CLI</h2>
+      <h2>CLI Reference</h2>
       <div class="cli-ref">
-        <div class="cli-cmd">
-          <code>peek &lt;path&gt;</code>
-          <span>Switch to worktree</span>
+        <div class="cli-group">
+          <h4>Agent Commands</h4>
+          <div class="cli-cmd">
+            <code>peek start &lt;name&gt;</code>
+            <span>Create agent session</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek save</code>
+            <span>Merge work to main</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek discard</code>
+            <span>Abandon changes</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek scope</code>
+            <span>Copy context for agent</span>
+          </div>
         </div>
-        <div class="cli-cmd">
-          <code>peek .</code>
-          <span>Back to main</span>
+        
+        <div class="cli-group">
+          <h4>Navigation</h4>
+          <div class="cli-cmd">
+            <code>peek &lt;branch&gt;</code>
+            <span>Switch to worktree</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek .</code>
+            <span>Back to main</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek -</code>
+            <span>Previous worktree</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek list</code>
+            <span>Show all worktrees</span>
+          </div>
         </div>
-        <div class="cli-cmd">
-          <code>peek --last</code>
-          <span>Previous worktree</span>
+
+        <div class="cli-group">
+          <h4>Worktree Management</h4>
+          <div class="cli-cmd">
+            <code>peek create &lt;branch&gt;</code>
+            <span>Create worktree</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek remove &lt;path&gt;</code>
+            <span>Remove worktree</span>
+          </div>
+          <div class="cli-cmd">
+            <code>peek clean</code>
+            <span>Remove all temp worktrees</span>
+          </div>
         </div>
-        <div class="cli-cmd">
-          <code>peek list</code>
-          <span>Show all worktrees</span>
+      </div>
+    </section>
+
+    <section id="frameworks" class="docs">
+      <h2>Framework Support</h2>
+      
+      <div class="framework-cards">
+        <div class="framework-card">
+          <div class="framework-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="40" height="40">
+              <path d="M12 0L1.608 6v12L12 24l10.392-6V6L12 0zm-1.073 17.445l-4.236-7.334 4.236 2.445V5.889l4.236 7.334-4.236-2.445v6.667z"/>
+            </svg>
+          </div>
+          <h3>Vite</h3>
+          <p>Full integration with HMR support</p>
+          <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@ekarya0x/vite-plugin'</span>
+
+<span class="kw">export default</span> {
+  plugins: [peek({
+    port: <span class="num">24789</span>,
+    banner: <span class="kw">true</span>
+  })]
+}</code></pre>
         </div>
-        <div class="cli-cmd">
-          <code>peek create &lt;branch&gt;</code>
-          <span>Create and switch</span>
-        </div>
-        <div class="cli-cmd">
-          <code>peek remove &lt;path&gt;</code>
-          <span>Remove worktree</span>
-        </div>
-        <div class="cli-cmd">
-          <code>peek scope</code>
-          <span>Copy context for Cursor</span>
-        </div>
-        <div class="cli-cmd">
-          <code>peek clean</code>
-          <span>Remove /tmp/peek/*</span>
+        
+        <div class="framework-card">
+          <div class="framework-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="40" height="40">
+              <path d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.251 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.572 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z"/>
+            </svg>
+          </div>
+          <h3>Next.js</h3>
+          <p>Works with App Router and Pages Router</p>
+          <pre><code><span class="kw">import</span> withPeek <span class="kw">from</span> <span class="str">'@ekarya0x/next-plugin'</span>
+
+<span class="kw">export default</span> withPeek({
+  port: <span class="num">24789</span>,
+  banner: <span class="kw">true</span>
+})({
+  <span class="comment">// your config</span>
+})</code></pre>
         </div>
       </div>
     </section>
 
     <section id="api" class="docs">
       <h2>API</h2>
-      <h3>Vite Plugin</h3>
-      <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@peek/vite-plugin'</span>
-
-peek({
-  port: <span class="num">24789</span>,    <span class="comment">// WebSocket port</span>
-  banner: <span class="kw">true</span>    <span class="comment">// Show UI banner</span>
-})</code></pre>
-
       <h3>HTTP Endpoints</h3>
+      <p>Your dev server exposes these endpoints:</p>
       <div class="cli-ref">
         <div class="cli-cmd">
           <code>GET /__peek</code>
-          <span>Current state</span>
+          <span>Current state + worktrees</span>
         </div>
         <div class="cli-cmd">
           <code>POST /__peek</code>
-          <span>Switch worktree</span>
+          <span>Switch worktree <code>{ path: string }</code></span>
         </div>
         <div class="cli-cmd">
           <code>GET /__peek/scope</code>
           <span>Get context payload</span>
         </div>
       </div>
+
+      <h3>WebSocket</h3>
+      <p>Connect to <code>ws://localhost:24789</code> for real-time updates:</p>
+      <pre><code><span class="kw">const</span> ws = <span class="kw">new</span> WebSocket(<span class="str">'ws://localhost:24789'</span>)
+
+ws.onmessage = (e) => {
+  <span class="kw">const</span> data = JSON.parse(e.data)
+  <span class="comment">// { type: 'peek:switch', from: '...', to: '...' }</span>
+}</code></pre>
     </section>
 
-    <!-- Terminal Contact Form -->
+    <!-- Contact Form -->
     <section id="contact" class="docs contact-section">
       <h2>Contact</h2>
       <p class="section-subtitle">Have a feature request or found a bug? Drop us a line.</p>
@@ -252,8 +406,9 @@ peek({
   <footer>
     <div class="footer-content">
       <p class="footer-logo">peek</p>
+      <p class="footer-tagline">Any agent, any branch, one command.</p>
       <p class="footer-links">
-        <a href="https://github.com/nicholascostadev/peek" target="_blank">GitHub</a>
+        <a href="https://github.com/ekarya0x/peek" target="_blank">GitHub</a>
         <span class="footer-sep">·</span>
         <a href="#start">Docs</a>
         <span class="footer-sep">·</span>
@@ -280,6 +435,17 @@ peek({
       html.dataset.theme = next;
       localStorage.setItem('theme', next);
     };
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        const tabId = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tabId + '-config').classList.add('active');
+      };
+    });
 
     // Flickering Grid Animation
     class FlickeringGrid {
@@ -354,7 +520,6 @@ peek({
       formStatus.classList.add('visible');
       
       try {
-        // For demo purposes - in production, replace with actual form endpoint
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         formStatus.innerHTML = '<span class="status-success">✓ Message sent successfully!</span>';
