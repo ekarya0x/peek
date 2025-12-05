@@ -1,7 +1,8 @@
-import { PeekCore, isValidWorktree } from '@ekarya0x/middleware'
+import { PeekCore } from '@ekarya0x/middleware'
 
-export async function switchCmd(target: string, port: string): Promise<void> {
+export async function switchCmd(target: string, port?: string): Promise<void> {
   const core = new PeekCore()
+  const resolvedPort = port || process.env.PEEK_PORT || '3000'
 
   if (target === '-') {
     const result = await core.switchLast()
@@ -28,7 +29,7 @@ export async function switchCmd(target: string, port: string): Promise<void> {
   }
 
   try {
-    const res = await fetch(`http://localhost:${port}/__peek`, {
+    const res = await fetch(`http://localhost:${resolvedPort}/__peek`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: core.getCurrent() })

@@ -3,7 +3,7 @@ import { switchCmd } from './switch.js'
 
 interface RemoveOptions {
   force?: boolean
-  port: string
+  port?: string
 }
 
 export async function removeCmd(path: string, opts: RemoveOptions): Promise<void> {
@@ -21,6 +21,6 @@ export async function removeCmd(path: string, opts: RemoveOptions): Promise<void
   }
 
   console.log('Worktree removed. Switching to main...')
-  await switchCmd('.', opts.port)
+  await switchCmd('.', opts.port || process.env.PEEK_PORT || '3000')
 }
 

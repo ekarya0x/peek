@@ -19,17 +19,40 @@ program
   .name('peek')
   .description('Any agent, any branch, one command')
   .version('1.0.0')
+  .showHelpAfterError('(see `peek --help` for usage)')
+  .showSuggestionAfterError(true)
+
+program.addHelpText('after', `
+Examples:
+  peek switch feature/login    # switch dev server to that worktree
+  peek .                       # back to main
+  peek -                       # previous worktree
+  peek start ui-review         # create isolated worktree
+  peek save                    # merge isolated work
+  peek discard --force         # drop isolated work
+  peek --port 5173 feature/ui  # switch dev server port
+`)
 
 // Default command - switch or show status
 program
   .argument('[target]', 'Worktree path, branch name, or "." for main')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .action(async (target, opts) => {
     if (!target) {
       await statusCmd()
       return
     }
-    await switchCmd(target, opts.port)
+    await switchCmd(target, opts.port ?? '3000')
+  })
+
+// Explicit switch command (same as default)
+program
+  .command('switch <target>')
+  .alias('sw')
+  .description('Switch dev server to a worktree')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
+  .action(async (target, opts) => {
+    await switchCmd(target, opts.port ?? '3000')
   })
 
 // ============================================
@@ -39,16 +62,16 @@ program
 program
   .command('start <name>')
   .alias('s')
-  .description('Start new agent session (creates worktree)')
+  .description('Start new isolated work session (creates worktree)')
   .option('--base <ref>', 'Base branch/commit', 'HEAD')
   .option('--at <path>', 'Custom worktree path')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .action(startCmd)
 
 program
   .command('save')
   .description('Save agent work (merge and optionally cleanup)')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .option('--keep', 'Keep worktree after merge')
   .option('-m, --message <msg>', 'Commit message for uncommitted changes')
   .option('--push', 'Push after merge')
@@ -57,7 +80,7 @@ program
 program
   .command('discard')
   .description('Discard agent work (remove worktree and branch)')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .option('-f, --force', 'Skip confirmation')
   .action(discardCmd)
 
@@ -81,9 +104,9 @@ program
   .command('last')
   .alias('-')
   .description('Switch to previous worktree')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .action(async (opts) => {
-    await switchCmd('-', opts.port)
+    await switchCmd('-', opts.port ?? '3000')
   })
 
 // ============================================
@@ -96,7 +119,7 @@ program
   .description('Create worktree and switch to it')
   .option('--base <ref>', 'Base ref', 'HEAD')
   .option('--at <path>', 'Custom path')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .action(createCmd)
 
 program
@@ -104,7 +127,7 @@ program
   .alias('rm')
   .description('Remove worktree and switch to main')
   .option('-f, --force', 'Force remove')
-  .option('-p, --port <port>', 'Dev server port', '3000')
+  .option('-p, --port [port]', 'Dev server port (default: 3000)')
   .action(removeCmd)
 
 program

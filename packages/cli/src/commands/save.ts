@@ -3,7 +3,7 @@ import { PeekCore, removeWorktree, getWorktreeInfo } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface SaveOptions {
-  port: string
+  port?: string
   keep?: boolean
   message?: string
   push?: boolean
@@ -28,6 +28,7 @@ export async function saveCmd(opts: SaveOptions): Promise<void> {
   const core = new PeekCore()
   const current = core.getCurrent()
   const main = core.getMain()
+  const port = opts.port || process.env.PEEK_PORT || '3000'
 
   if (current === main) {
     console.error('❌ Already on main branch. Nothing to save.')
@@ -65,7 +66,7 @@ export async function saveCmd(opts: SaveOptions): Promise<void> {
 
   // Step 2: Switch to main
   console.log(`  Switching to main...`)
-  await switchCmd('.', opts.port)
+  await switchCmd('.', port)
 
   // Step 3: Merge the agent branch
   console.log(`  Merging ${info.branch}...`)

@@ -5,7 +5,7 @@ import { switchCmd } from './switch.js'
 
 interface StartOptions {
   base?: string
-  port: string
+  port?: string
   at?: string
 }
 
@@ -21,10 +21,17 @@ interface StartOptions {
  * This keeps agent work isolated from your main branch.
  */
 export async function startCmd(target: string, opts: StartOptions): Promise<void> {
+  const port = opts.port || '3000'
   // Parse target - could be "agent/feature", "claude", or just "feature"
-  const branch = target.startsWith('agent/') ? target : `agent/${target}`
-  const safeName = branch.replace(/\//g, '-')
-  const worktreePath = opts.at ?? join('/tmp/peek', safeName)
+  const nameInput = target.trim()
+  const slug = nameInput
+    .replace(/^[\\/]+|[\\/]+$/g, '')
+    .replace(/[^a-zA-Z0-9._-]+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 64) || 'work'
+
+  const branch = `peek-${slug}`
+  const worktreePath = opts.at ?? join('/tmp/peek', `peek-${slug}`)
 
   // Check if worktree already exists
   const worktrees = listWorktrees(process.cwd())
@@ -37,7 +44,7 @@ export async function startCmd(target: string, opts: StartOptions): Promise<void
   if (existing) {
     console.log(`Agent session already exists: ${existing.branch}`)
     console.log(`Switching to existing worktree...`)
-    await switchCmd(existing.path, opts.port)
+    await switchCmd(existing.path, port)
     return
   }
 
@@ -69,7 +76,7 @@ export async function startCmd(target: string, opts: StartOptions): Promise<void
   console.log(`✓ Worktree created`)
   console.log(`✓ Switching dev server...`)
   
-  await switchCmd(worktreePath, opts.port)
+  await switchCmd(worktreePath, port)
 
   console.log('')
   console.log(`Agent session ready!`)
