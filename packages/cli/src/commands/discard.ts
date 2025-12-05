@@ -3,7 +3,7 @@ import { PeekCore, removeWorktree, getWorktreeInfo } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface DiscardOptions {
-  port: string
+  port?: string
   force?: boolean
 }
 
@@ -23,6 +23,7 @@ export async function discardCmd(opts: DiscardOptions): Promise<void> {
   const core = new PeekCore()
   const current = core.getCurrent()
   const main = core.getMain()
+  const port = opts.port || process.env.PEEK_PORT || '3000'
 
   if (current === main) {
     console.error('❌ Already on main branch. Nothing to discard.')
@@ -73,7 +74,7 @@ export async function discardCmd(opts: DiscardOptions): Promise<void> {
 
   // Step 1: Switch to main first
   console.log(`  Switching to main...`)
-  await switchCmd('.', opts.port)
+  await switchCmd('.', port)
 
   // Step 2: Force remove the worktree
   console.log(`  Removing worktree...`)
