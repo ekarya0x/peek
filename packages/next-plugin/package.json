@@ -1,0 +1,53 @@
+{
+  "name": "@ekarya0x/next-plugin",
+  "version": "0.1.0",
+  "description": "Next.js plugin for peek - live worktree switching",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ekarya0x/middleware": "workspace:*",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.10",
+    "next": "^14.0.0",
+    "vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "next": "^13.0.0 || ^14.0.0 || ^15.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "next",
+    "nextjs",
+    "git",
+    "worktree",
+    "dev-server",
+    "hot-reload",
+    "dx",
+    "ai",
+    "agent"
+  ],
+  "homepage": "https://github.com/nicholascostadev/peek",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicholascostadev/peek"
+  },
+  "bugs": "https://github.com/nicholascostadev/peek/issues"
+}
+
