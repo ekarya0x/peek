@@ -10,19 +10,11 @@ interface StartOptions {
 }
 
 /**
- * Start a new agent worktree session
- * 
- * Usage:
- *   peek start agent/feature     - Creates worktree for agent/feature branch
- *   peek start claude            - Creates worktree for claude branch  
- *   peek start --base develop    - Creates from develop branch
- * 
- * The worktree is created in /tmp/peek/<safe-branch-name> by default.
- * This keeps agent work isolated from your main branch.
+ * Start a new isolated worktree session.
+ * Names are slugged to `peek-<name>` under /tmp/peek.
  */
 export async function startCmd(target: string, opts: StartOptions): Promise<void> {
   const port = opts.port || '3000'
-  // Parse target - could be "agent/feature", "claude", or just "feature"
   const nameInput = target.trim()
   const slug = nameInput
     .replace(/^[\\/]+|[\\/]+$/g, '')
@@ -38,7 +30,8 @@ export async function startCmd(target: string, opts: StartOptions): Promise<void
   const existing = worktrees.find(w => 
     w.branch === branch || 
     w.path === worktreePath ||
-    w.path.endsWith(`/${safeName}`)
+    w.path.endsWith(`/${branch}`) ||
+    w.path.endsWith(`/${worktreePath.split('/').pop()}`)
   )
 
   if (existing) {
