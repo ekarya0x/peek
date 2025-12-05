@@ -1,6 +1,6 @@
 {
   "name": "@ekarya0x/next-plugin",
-  "version": "0.1.10",
+  "version": "0.2.1",
   "description": "Next.js plugin for peek - live worktree switching",
   "type": "module",
   "main": "./dist/index.js",

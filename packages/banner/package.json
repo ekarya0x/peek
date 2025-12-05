@@ -1,6 +1,6 @@
 {
   "name": "@ekarya0x/banner",
-  "version": "0.1.10",
+  "version": "0.2.1",
   "description": "UI banner component for peek",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,6 +29,12 @@
     "react": "^18.2.0",
     "vitest": "^1.0.0"
   },
+  "homepage": "https://github.com/ekarya0x/peek",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ekarya0x/peek"
+  },
+  "bugs": "https://github.com/ekarya0x/peek/issues",
   "peerDependencies": {
     "react": "^18.0.0"
   },
