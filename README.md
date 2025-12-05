@@ -39,7 +39,7 @@ git checkout main && npm run dev && git stash pop
 ## The Solution
 
 ```bash
-peek start claude          # start agent session
+peek start ui-review       # start isolated session
 # ...agent works...
 peek save                  # merge when done
 ```
@@ -85,11 +85,15 @@ export default withPeek()({
 ### 3. Use
 
 ```bash
-peek start claude         # create agent worktree, switch to it
+peek start ui-review      # create worktree, switch to it
 # ... agent does its work ...
 peek save                 # merge work, cleanup
 # or
 peek discard              # abandon changes
+
+# Already have a git worktree? Just switch—no setup needed:
+peek switch /path/to/existing/worktree
+peek .   # back to main
 ```
 
 ---
@@ -100,12 +104,12 @@ peek uses **git worktrees** to maintain multiple branches simultaneously, combin
 
 ```
 /your-project (main)          ← your editor stays here
-/tmp/peek/agent-claude        ← agent worktree
-/tmp/peek/agent-cursor        ← another agent worktree
+/tmp/peek/peek-ui-review      ← isolated worktree
+/tmp/peek/peek-api-metrics    ← another isolated worktree
 ```
 
-When you run `peek claude`:
-1. **Dev server** points to `/tmp/peek/agent-claude`
+When you run `peek ui-review`:
+1. **Dev server** points to `/tmp/peek/peek-ui-review`
 2. **Browser** reloads with agent's code
 3. **Your editor** and main branch stay untouched
 
@@ -119,12 +123,12 @@ The recommended flow for working with AI agents:
 
 ```bash
 # 1. Start a session for your agent
-peek start claude
+peek start ui-review
 
 # 2. Give context to your agent
 peek scope    # copies project structure to clipboard
 
-# 3. Let the agent work in /tmp/peek/agent-claude
+# 3. Let the agent work in /tmp/peek/peek-ui-review
 # ...agent makes changes...
 
 # 4. Review in your browser (it's already showing the changes!)
@@ -143,13 +147,13 @@ peek discard               # removes worktree and branch
 Run multiple agents in parallel:
 
 ```bash
-peek start claude          # worktree at /tmp/peek/agent-claude
-peek start cursor          # worktree at /tmp/peek/agent-cursor  
-peek start aider           # worktree at /tmp/peek/agent-aider
+peek start ui-review       # /tmp/peek/peek-ui-review
+peek start api-metrics     # /tmp/peek/peek-api-metrics  
+peek start design-pass     # /tmp/peek/peek-design-pass
 
 peek list                  # see all worktrees
-peek claude                # switch to claude's work
-peek cursor                # switch to cursor's work
+peek ui-review             # switch to ui-review
+peek api-metrics           # switch to api-metrics
 peek .                     # back to main
 ```
 
@@ -175,11 +179,11 @@ peek .                     # back to main
 
 #### `peek start <name>`
 
-Create a new agent worktree and switch to it.
+Create a new isolated worktree and switch to it.
 
 ```bash
-peek start claude              # creates agent/claude branch
-peek start feature-auth        # creates agent/feature-auth branch
+peek start ui-review           # creates peek-ui-review branch
+peek start feature-auth        # creates peek-feature-auth branch
 peek start --base develop fix  # branch from develop
 ```
 
