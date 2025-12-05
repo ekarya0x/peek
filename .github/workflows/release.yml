@@ -31,13 +31,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write  # Required for OIDC
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
       
       - uses: pnpm/action-setup@v4
-        # Uses packageManager from package.json automatically
           
       - uses: actions/setup-node@v4
         with:
@@ -48,7 +47,6 @@ jobs:
       - run: pnpm install
       - run: pnpm build
       
-      # Publish with OIDC (Trusted Publishers) - no token needed
       - name: Publish packages
         run: pnpm publish -r --access public --no-git-checks
         env:
