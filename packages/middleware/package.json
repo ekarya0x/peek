@@ -1,6 +1,6 @@
 {
   "name": "@ekarya0x/middleware",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Core worktree switching logic for peek - any agent, any branch, one command",
   "type": "module",
   "main": "./dist/index.js",

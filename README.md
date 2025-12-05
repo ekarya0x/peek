@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ekarya0x/peek/master/docs/public/demo.gif" alt="peek demo" width="640" />
+  <img src="https://github.com/ekarya0x/peek/raw/master/docs/public/demo.gif" alt="peek demo" width="640" />
 </p>
 
 <h1 align="center">peek</h1>
