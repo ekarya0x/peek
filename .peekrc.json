@@ -1,0 +1,10 @@
+{
+  "worktreeDir": "/tmp/peek",
+  "defaultBase": "HEAD",
+  "exclude": ["node_modules", ".git", "dist", "build", ".next", ".cache"],
+  "scope": {
+    "maxDepth": 4,
+    "maxFileSize": 50000
+  }
+}
+

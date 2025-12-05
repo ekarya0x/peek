@@ -1,0 +1,73 @@
+#peek-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  background: var(--peek-bg, #0a0a0a);
+  color: var(--peek-fg, #fafafa);
+  font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 99999;
+  border-top: 1px solid var(--peek-border, #262626);
+  transform: translateY(100%);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#peek-banner.visible {
+  transform: translateY(0);
+}
+
+#peek-banner.peeking {
+  --peek-bg: #0c1929;
+  --peek-border: #1e3a5f;
+}
+
+.peek-path {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.peek-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+#peek-banner.peeking .peek-dot {
+  background: #3b82f6;
+  animation: peek-pulse 2s infinite;
+}
+
+@keyframes peek-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.peek-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.peek-btn {
+  background: transparent;
+  border: 1px solid #404040;
+  color: inherit;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s ease;
+}
+
+.peek-btn:hover {
+  background: #262626;
+  border-color: #525252;
+}
+

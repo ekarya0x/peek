@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>peek — Your dev server, any branch, one command</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Berkeley+Mono,JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Flickering Grid Background -->
+  <canvas id="flickering-grid"></canvas>
+
+  <nav>
+    <a href="/" class="logo">peek</a>
+    <div class="nav-links">
+      <a href="#start">Start</a>
+      <a href="#cli">CLI</a>
+      <a href="#api">API</a>
+      <a href="#contact">Contact</a>
+      <button id="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <a href="https://github.com/nicholascostadev/peek" target="_blank" class="github-star">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <span>Star</span>
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="hero-title-text">peek</span>
+        </h1>
+        <p class="tagline">Your dev server, any branch, one command.</p>
+        <div class="hero-code">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+            </div>
+            <div class="terminal-body">
+              <pre><code><span class="prompt">$</span> peek agent/refactor-47</code></pre>
+            </div>
+          </div>
+          <p class="hero-caption">Browser updates. Instantly.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <h3>No restart</h3>
+        <p>Dev server stays running. HMR does the rest.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 3v12"/>
+            <circle cx="18" cy="6" r="3"/>
+            <circle cx="6" cy="18" r="3"/>
+            <path d="M18 9a9 9 0 0 1-9 9"/>
+          </svg>
+        </div>
+        <h3>No checkout</h3>
+        <p>Your main branch untouched. Context preserved.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>Agent ready</h3>
+        <p>Built for reviewing AI-generated code at speed.</p>
+      </div>
+    </section>
+
+    <section id="start" class="docs">
+      <h2>Start</h2>
+      <div class="step">
+        <span class="step-num">1</span>
+        <div class="step-content">
+          <p>Install</p>
+          <pre><code>npm install -D @peek/vite-plugin</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <div class="step-content">
+          <p>Configure</p>
+          <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@peek/vite-plugin'</span>
+
+<span class="kw">export default</span> {
+  plugins: [peek()]
+}</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <div class="step-content">
+          <p>Use</p>
+          <pre><code><span class="prompt">$</span> peek agent/feature
+<span class="prompt">$</span> peek .          <span class="comment"># back to main</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="cli" class="docs">
+      <h2>CLI</h2>
+      <div class="cli-ref">
+        <div class="cli-cmd">
+          <code>peek &lt;path&gt;</code>
+          <span>Switch to worktree</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek .</code>
+          <span>Back to main</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek --last</code>
+          <span>Previous worktree</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek list</code>
+          <span>Show all worktrees</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek create &lt;branch&gt;</code>
+          <span>Create and switch</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek remove &lt;path&gt;</code>
+          <span>Remove worktree</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek scope</code>
+          <span>Copy context for Cursor</span>
+        </div>
+        <div class="cli-cmd">
+          <code>peek clean</code>
+          <span>Remove /tmp/peek/*</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="api" class="docs">
+      <h2>API</h2>
+      <h3>Vite Plugin</h3>
+      <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@peek/vite-plugin'</span>
+
+peek({
+  port: <span class="num">24789</span>,    <span class="comment">// WebSocket port</span>
+  banner: <span class="kw">true</span>    <span class="comment">// Show UI banner</span>
+})</code></pre>
+
+      <h3>HTTP Endpoints</h3>
+      <div class="cli-ref">
+        <div class="cli-cmd">
+          <code>GET /__peek</code>
+          <span>Current state</span>
+        </div>
+        <div class="cli-cmd">
+          <code>POST /__peek</code>
+          <span>Switch worktree</span>
+        </div>
+        <div class="cli-cmd">
+          <code>GET /__peek/scope</code>
+          <span>Get context payload</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminal Contact Form -->
+    <section id="contact" class="docs contact-section">
+      <h2>Contact</h2>
+      <p class="section-subtitle">Have a feature request or found a bug? Drop us a line.</p>
+      
+      <div class="terminal-form-wrapper">
+        <div class="terminal-form">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">peek — contact</span>
+          </div>
+          <div class="terminal-form-body">
+            <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+              <div class="terminal-line">
+                <span class="prompt">$</span>
+                <span class="command">peek submit --type</span>
+                <select name="type" id="form-type" required>
+                  <option value="">select</option>
+                  <option value="feature">feature</option>
+                  <option value="bug">bug</option>
+                  <option value="question">question</option>
+                  <option value="other">other</option>
+                </select>
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">$</span>
+                <span class="command">--email</span>
+                <input type="email" name="email" id="form-email" placeholder="you@example.com" required>
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">$</span>
+                <span class="command">--name</span>
+                <input type="text" name="name" id="form-name" placeholder="Your name" required>
+              </div>
+              <div class="terminal-line terminal-line-message">
+                <span class="prompt">$</span>
+                <span class="command">--message</span>
+                <textarea name="message" id="form-message" placeholder="Describe your feature or bug..." required></textarea>
+              </div>
+              <div class="terminal-line terminal-submit-line">
+                <span class="prompt">$</span>
+                <button type="submit" class="terminal-submit">
+                  <span class="command">submit</span>
+                  <span class="submit-arrow">→</span>
+                </button>
+                <span class="submit-hint"># press Enter or click to send</span>
+              </div>
+            </form>
+            <div id="form-status" class="terminal-status"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p class="footer-logo">peek</p>
+      <p class="footer-links">
+        <a href="https://github.com/nicholascostadev/peek" target="_blank">GitHub</a>
+        <span class="footer-sep">·</span>
+        <a href="#start">Docs</a>
+        <span class="footer-sep">·</span>
+        <a href="#contact">Contact</a>
+      </p>
+      <p class="footer-license">MIT License</p>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+      html.dataset.theme = saved;
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.dataset.theme = 'dark';
+    }
+
+    toggle.onclick = () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('theme', next);
+    };
+
+    // Flickering Grid Animation
+    class FlickeringGrid {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.squareSize = 4;
+        this.gridGap = 6;
+        this.flickerChance = 0.03;
+        this.squares = [];
+        this.resize();
+        this.init();
+        this.animate();
+        
+        window.addEventListener('resize', () => this.resize());
+      }
+      
+      resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.init();
+      }
+      
+      init() {
+        this.squares = [];
+        const cols = Math.ceil(this.canvas.width / (this.squareSize + this.gridGap));
+        const rows = Math.ceil(this.canvas.height / (this.squareSize + this.gridGap));
+        
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            this.squares.push({
+              x: i * (this.squareSize + this.gridGap),
+              y: j * (this.squareSize + this.gridGap),
+              opacity: Math.random() * 0.15,
+              targetOpacity: Math.random() * 0.15,
+              flickerSpeed: 0.02 + Math.random() * 0.03
+            });
+          }
+        }
+      }
+      
+      animate() {
+        const isDark = html.dataset.theme === 'dark';
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.squares.forEach(square => {
+          if (Math.random() < this.flickerChance) {
+            square.targetOpacity = Math.random() * 0.2;
+          }
+          
+          square.opacity += (square.targetOpacity - square.opacity) * square.flickerSpeed;
+          
+          const color = isDark ? `rgba(99, 102, 241, ${square.opacity})` : `rgba(79, 70, 229, ${square.opacity * 0.6})`;
+          this.ctx.fillStyle = color;
+          this.ctx.fillRect(square.x, square.y, this.squareSize, this.squareSize);
+        });
+        
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+    
+    new FlickeringGrid(document.getElementById('flickering-grid'));
+
+    // Form handling
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+    
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      formStatus.innerHTML = '<span class="status-pending">Sending...</span>';
+      formStatus.classList.add('visible');
+      
+      try {
+        // For demo purposes - in production, replace with actual form endpoint
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        formStatus.innerHTML = '<span class="status-success">✓ Message sent successfully!</span>';
+        contactForm.reset();
+        
+        setTimeout(() => {
+          formStatus.classList.remove('visible');
+        }, 3000);
+      } catch (error) {
+        formStatus.innerHTML = '<span class="status-error">✗ Failed to send. Please try again.</span>';
+      }
+    });
+  </script>
+</body>
+</html>
