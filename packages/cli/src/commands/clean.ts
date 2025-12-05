@@ -1,6 +1,6 @@
 import { readdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
-import { removeWorktree, isValidWorktree } from '@peek/middleware'
+import { removeWorktree, isValidWorktree } from '@ekarya0x/middleware'
 
 interface CleanOptions {
   force?: boolean

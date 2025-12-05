@@ -10,13 +10,13 @@ export async function initCmd(): Promise<void> {
   if (viteConfig) {
     console.log('Detected Vite project.')
     console.log('\nAdd to your vite.config.ts:\n')
-    console.log(`  import peek from '@peek/vite-plugin'`)
+    console.log(`  import peek from '@ekarya0x/vite-plugin'`)
     console.log('')
     console.log('  export default defineConfig({')
     console.log('    plugins: [peek()]')
     console.log('  })')
     console.log('\nInstall:')
-    console.log('  pnpm add -D @peek/vite-plugin')
+    console.log('  pnpm add -D @ekarya0x/vite-plugin')
     return
   }
 

@@ -1,4 +1,4 @@
-import { removeWorktree } from '@peek/middleware'
+import { removeWorktree } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface RemoveOptions {

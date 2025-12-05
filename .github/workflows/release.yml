@@ -21,7 +21,7 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
           
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm build
       - run: pnpm test
       - run: pnpm typecheck
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write  # Required for OIDC trusted publishing
+      id-token: write  # Required for OIDC
 
     steps:
       - uses: actions/checkout@v4
@@ -47,11 +47,11 @@ jobs:
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
           
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm build
       
-      # Publish with provenance (OIDC - no token needed!)
-      - run: pnpm publish -r --access public --no-git-checks
+      # Publish with OIDC (Trusted Publishers) - no token needed
+      - name: Publish packages
+        run: pnpm publish -r --access public --no-git-checks
         env:
           NPM_CONFIG_PROVENANCE: true
-          # No NPM_TOKEN needed - uses OIDC trusted publishing

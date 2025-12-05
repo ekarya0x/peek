@@ -14,7 +14,7 @@ Thanks for your interest in contributing to peek! This guide will help you get s
 
 ```bash
 # Clone the repository
-git clone https://github.com/nicholascostadev/peek
+git clone https://github.com/ekarya0x/peek
 cd peek
 
 # Install dependencies

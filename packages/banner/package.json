@@ -1,6 +1,6 @@
 {
-  "name": "@peek/banner",
-  "version": "1.0.0",
+  "name": "@ekarya0x/banner",
+  "version": "0.1.0",
   "description": "UI banner component for peek",
   "type": "module",
   "main": "./dist/index.js",

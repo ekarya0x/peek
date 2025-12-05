@@ -1,5 +1,5 @@
 import type { Plugin, ViteDevServer, ResolvedConfig } from 'vite'
-import { PeekCore } from '@peek/middleware'
+import { PeekCore } from '@ekarya0x/middleware'
 import { WebSocketServer, WebSocket } from 'ws'
 
 export interface PeekOptions {

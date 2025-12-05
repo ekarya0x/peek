@@ -1,5 +1,5 @@
 {
-  "name": "@peek/example-vite-react",
+  "name": "@ekarya0x/example-vite-react",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,7 +13,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@peek/vite-plugin": "workspace:*",
+    "@ekarya0x/vite-plugin": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",

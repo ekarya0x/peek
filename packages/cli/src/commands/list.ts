@@ -1,4 +1,4 @@
-import { listWorktrees } from '@peek/middleware'
+import { listWorktrees } from '@ekarya0x/middleware'
 
 export async function listCmd(): Promise<void> {
   const worktrees = listWorktrees(process.cwd())
