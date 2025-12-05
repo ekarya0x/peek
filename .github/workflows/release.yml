@@ -46,8 +46,5 @@ jobs:
           
       - run: pnpm install
       - run: pnpm build
-      
-      - name: Publish packages
-        run: pnpm publish -r --access public --no-git-checks
-        env:
-          NPM_CONFIG_PROVENANCE: true
+      - name: Publish packages with provenance (npm OIDC)
+        run: pnpm -r exec npm publish --provenance --access public
