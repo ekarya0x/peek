@@ -42,6 +42,7 @@
   
   /* Typography */
   --font: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --display: 'Libre Baskerville', 'DM Sans', serif;
   --mono: 'JetBrains Mono', 'Berkeley Mono', ui-monospace, monospace;
 }
 
@@ -136,12 +137,13 @@ nav {
 }
 
 .logo {
-  font-family: var(--mono);
-  font-size: 20px;
-  font-weight: 600;
+  font-family: var(--display);
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 400;
   color: var(--fg);
   text-decoration: none;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   transition: opacity 0.2s;
 }
 
@@ -246,10 +248,11 @@ main {
 }
 
 .hero-title {
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: clamp(56px, 14vw, 100px);
-  font-weight: 700;
-  letter-spacing: -0.05em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.06em;
   margin-bottom: 20px;
   line-height: 1;
 }
