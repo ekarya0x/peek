@@ -1,6 +1,6 @@
 {
   "name": "@ekarya0x/cli",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "Any agent, any branch, one command - CLI for peek",
   "type": "module",
   "bin": {
