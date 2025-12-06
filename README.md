@@ -25,169 +25,202 @@
 
 ## The Problem
 
-Every AI review = context switch tax:
+Every time you ask an AI agent to code, you pay a "context switch tax."
 
 ```bash
 git stash && git checkout agent/feature-47 && npm run dev
-# ...wait...
+# ...wait for server...
+# ...review changes...
 git checkout main && npm run dev && git stash pop
 ```
 
-At 20 reviews/day, that's hours wasted rather than productivity gained.
+At 20 reviews a day, you're losing hours just waiting for your dev server to restart. It breaks your flow and makes AI assistance feel like a chore.
 
 ## The Solution
 
+**peek** eliminates the friction. It uses git worktrees and hot module replacement to let you review code instantly.
+
 ```bash
-peek start ui-review    # isolated worktree
-peek save               # merge back
+peek start ui-review    # creates isolated worktree & switches dev server
+peek save               # merges to main & cleans up
 ```
 
 Zero restart. Zero checkout. **Instant switching.**
+
+Your main branch stays clean. Your dev server stays running. You stay in flow.
 
 ---
 
 ## Quickstart
 
-```bash
-# Install
-npm i -D @ekarya0x/cli @ekarya0x/vite-plugin
+### 1. Install
 
-# Configure (vite.config.ts)
+```bash
+npm i -D @ekarya0x/cli @ekarya0x/vite-plugin
+```
+
+### 2. Configure
+
+**Vite**
+```ts
+// vite.config.ts
 import peek from '@ekarya0x/vite-plugin'
 export default { plugins: [peek()] }
-
-# Use
-peek start my-feature   # create + switch
-peek save               # merge + cleanup
-peek discard            # abandon
 ```
 
-Next.js:
-```bash
-npm i -D @ekarya0x/cli @ekarya0x/next-plugin
-```
-
+**Next.js**
 ```ts
 // next.config.ts
 import withPeek from '@ekarya0x/next-plugin'
 export default withPeek()({ /* config */ })
 ```
 
+### 3. Use
+
+```bash
+peek start my-feature   # create + switch
+peek scope              # copy context for agent
+peek save               # merge + cleanup
+```
+
 ---
 
 ## Why
 
-peek = git worktrees + hot reload.
+Under the hood, **peek** combines git worktrees with a smart middleware.
 
 ```
-/your-project           ← editor stays here
+/your-project           ← editor stays here (main)
 /tmp/peek/peek-ui       ← agent workspace 1
 /tmp/peek/peek-api      ← agent workspace 2
 ```
 
-`peek ui` → dev server serves `/tmp/peek/peek-ui` → browser reloads.
-`peek .` → back to main. Instant.
+When you run `peek ui`, we tell your running dev server to serve files from `/tmp/peek/peek-ui` instead of your current directory. The browser reloads instantly with the new content.
+
+When you're done, `peek .` snaps you right back to main.
 
 ---
 
 ## Workflow
 
+The ideal flow for AI-assisted development:
+
 ```bash
-peek start ui-review         # create worktree + switch
-peek scope                   # copy context to clipboard
-# ...agent works...
-peek save                    # merge, cleanup
-peek save --keep             # merge, keep worktree
-peek discard                 # abandon
+# 1. Create an isolated session
+peek start ui-review
+
+# 2. Give your agent the context it needs
+peek scope              # copies file tree & key files to clipboard
+
+# ... paste into Cursor/Claude/Aider ...
+# ... agent writes code ...
+
+# 3. Review live (browser updates automatically)
+
+# 4. Merge perfect code
+peek save               # squashes, merges to main, deletes worktree
+
+# Or abandon bad ideas
+peek discard            # wipes the worktree & branch
 ```
 
-**Multiple agents:**
-
+**Running multiple agents?** No problem.
 ```bash
 peek start auth-flow
 peek start ui-polish
-peek list                    # see all
-peek auth-flow               # switch
-peek .                       # main
+peek list                    # see all active sessions
+peek switch auth-flow        # check auth
+peek switch ui-polish        # check ui
+peek .                       # back to main
 ```
 
 ---
 
 ## CLI
 
-| Command | Description |
-|---------|-------------|
-| `peek <target>` | Switch to worktree |
-| `peek .` | Back to main |
-| `peek -` | Previous |
-| `peek start <name>` | Create isolated session |
-| `peek save` | Merge + cleanup |
-| `peek discard` | Abandon + cleanup |
-| `peek scope` | Copy context |
-| `peek list` | List worktrees |
-| `peek clean` | Remove /tmp/peek/* |
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `peek [target]` | | Switch to a worktree (or `.` for main, `-` for last) |
+| `peek start <name>` | `s` | Create a new isolated session |
+| `peek save` | | Merge changes to main and cleanup |
+| `peek discard` | | Abandon changes and cleanup |
+| `peek scope [path]` | `ctx` | Copy project context for AI |
+| `peek list` | `ls` | List active worktrees |
+| `peek status` | `st` | Show current status |
+| `peek create <br>` | `c` | Create a worktree (manual mode) |
+| `peek remove <path>` | `rm` | Remove a worktree |
+| `peek clean` | | Remove all temporary worktrees |
+| `peek init` | | Initialize peek in a new project |
 
 ### Options
 
+**start**
 ```bash
 peek start feat --base develop   # branch from develop
-peek save -m "feat: auth"        # custom commit
+peek start feat --at ./custom    # custom location
+```
+
+**save**
+```bash
+peek save -m "feat: auth"        # custom commit message
 peek save --push                 # push after merge
-peek discard --force             # skip confirm
-peek --port 5173 feature         # custom port
+peek save --keep                 # don't delete worktree
+```
+
+**discard**
+```bash
+peek discard --force             # skip confirmation
+```
+
+**scope**
+```bash
+peek scope --depth 2             # limit tree depth
+peek scope --output              # print to stdout instead of clipboard
 ```
 
 ---
 
 ## Tips
 
-**Workspace install (monorepo):**
+**Monorepos:**
+Install the CLI in the workspace root so it's available everywhere.
 ```bash
 pnpm add -w @ekarya0x/cli
 ```
 
-**CLI only (no plugin):**
+**Manual Mode (No Plugin):**
+You can use the CLI just for worktree management without the dev server integration.
 ```bash
-npm i -D @ekarya0x/cli
-peek switch /path/to/worktree   # direct path
+peek switch /path/to/worktree
 ```
 
-**Existing worktree:**
+**Existing Worktrees:**
+Peek can switch to any git worktree, not just the ones in `/tmp/peek`.
 ```bash
-peek switch /Users/me/worktrees/feature
-peek .
+peek switch ../my-other-branch
 ```
 
 ---
 
 ## API
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/__peek` | GET | Current state |
-| `/__peek` | POST | Switch `{ path }` |
+**HTTP Endpoints**
+Your dev server exposes these when the plugin is active:
 
-WebSocket at `ws://localhost:24789` for real-time events.
+- `GET  /__peek` — Current state + worktrees
+- `POST /__peek` — Switch worktree `{ path: string }`
+- `GET  /__peek/scope` — Get context payload
 
----
+**WebSocket**
+Connect to `ws://localhost:24789` (default) for real-time events.
 
-## Packages
-
-| Package | |
-|---------|--|
-| [@ekarya0x/cli](https://npmjs.com/package/@ekarya0x/cli) | CLI |
-| [@ekarya0x/vite-plugin](https://npmjs.com/package/@ekarya0x/vite-plugin) | Vite |
-| [@ekarya0x/next-plugin](https://npmjs.com/package/@ekarya0x/next-plugin) | Next.js |
-| [@ekarya0x/middleware](https://npmjs.com/package/@ekarya0x/middleware) | Core |
-| [@ekarya0x/banner](https://npmjs.com/package/@ekarya0x/banner) | UI |
-
----
-
-## Requirements
-
-- Node 18+
-- Git 2.20+
-- Vite 4+ / Next.js 13+
+```ts
+const ws = new WebSocket('ws://localhost:24789')
+ws.onmessage = (e) => {
+  const { type, from, to } = JSON.parse(e.data)
+  if (type === 'peek:switch') console.log(`Switched to ${to}`)
+}
+```
 
 ---
 
