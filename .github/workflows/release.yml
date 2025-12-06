@@ -47,4 +47,4 @@ jobs:
       - run: pnpm install
       - run: pnpm build
       - name: Publish packages with provenance (npm OIDC)
-        run: pnpm -r exec npm publish --provenance --access public
+        run: pnpm -r --filter \"!./docs\" exec npm publish --provenance --access public

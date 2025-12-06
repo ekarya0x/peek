@@ -1,6 +1,6 @@
 {
   "name": "@ekarya0x/cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Any agent, any branch, one command - CLI for peek",
   "type": "module",
   "bin": {
@@ -37,7 +37,7 @@
   "homepage": "https://github.com/ekarya0x/peek",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ekarya0x/peek"
+    "url": "git+https://github.com/ekarya0x/peek.git"
   },
   "bugs": "https://github.com/ekarya0x/peek/issues",
   "license": "MIT"

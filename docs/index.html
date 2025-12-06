@@ -7,7 +7,7 @@
   <meta name="description" content="Zero-downtime branch switching for AI-assisted development. Review agent work instantly without restarting your dev server.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Berkeley+Mono,JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Berkeley+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -54,13 +54,13 @@
               <span class="terminal-dot green"></span>
             </div>
             <div class="terminal-body">
-              <pre><code><span class="prompt">$</span> peek start claude
-<span class="output">🚀 Starting agent session: agent/claude
+              <pre><code><span class="prompt">$</span> peek start ui-review
+<span class="output">🚀 Starting session: peek-ui-review
    ✓ Worktree created
    ✓ Dev server switched</span>
 
 <span class="prompt">$</span> peek save
-<span class="output">💾 Saving agent work...
+<span class="output">💾 Saving work...
    ✓ Merged to main
    ✓ Worktree cleaned</span></code></pre>
             </div>
@@ -163,7 +163,7 @@
         <span class="step-num">3</span>
         <div class="step-content">
           <p>Use</p>
-          <pre><code><span class="prompt">$</span> peek start claude     <span class="comment"># start agent session</span>
+          <pre><code><span class="prompt">$</span> peek start ui-review   <span class="comment"># start isolated session</span>
 <span class="prompt">$</span> peek scope            <span class="comment"># copy context for agent</span>
 <span class="prompt">$</span> peek save             <span class="comment"># merge when happy</span></code></pre>
         </div>
@@ -178,8 +178,8 @@
         <div class="workflow-step">
           <div class="workflow-icon">🚀</div>
           <h3>1. Start Session</h3>
-          <pre><code><span class="prompt">$</span> peek start claude</code></pre>
-          <p>Creates isolated worktree at <code>/tmp/peek/agent-claude</code></p>
+          <pre><code><span class="prompt">$</span> peek start ui-review</code></pre>
+          <p>Creates isolated worktree at <code>/tmp/peek/peek-ui-review</code></p>
         </div>
         
         <div class="workflow-step">
@@ -205,13 +205,13 @@
 
       <h3>Multiple Agents</h3>
       <p>Run multiple agents simultaneously:</p>
-      <pre><code><span class="prompt">$</span> peek start claude    <span class="comment"># /tmp/peek/agent-claude</span>
-<span class="prompt">$</span> peek start cursor    <span class="comment"># /tmp/peek/agent-cursor</span>
-<span class="prompt">$</span> peek start aider     <span class="comment"># /tmp/peek/agent-aider</span>
+      <pre><code><span class="prompt">$</span> peek start ui-review    <span class="comment"># /tmp/peek/peek-ui-review</span>
+<span class="prompt">$</span> peek start api-metrics  <span class="comment"># /tmp/peek/peek-api-metrics</span>
+<span class="prompt">$</span> peek start design-pass  <span class="comment"># /tmp/peek/peek-design-pass</span>
 
-<span class="prompt">$</span> peek claude          <span class="comment"># switch to Claude's work</span>
-<span class="prompt">$</span> peek cursor          <span class="comment"># switch to Cursor's work</span>
-<span class="prompt">$</span> peek .               <span class="comment"># back to main</span></code></pre>
+<span class="prompt">$</span> peek ui-review          <span class="comment"># switch to ui-review</span>
+<span class="prompt">$</span> peek api-metrics        <span class="comment"># switch to api-metrics</span>
+<span class="prompt">$</span> peek .                  <span class="comment"># back to main</span></code></pre>
     </section>
 
     <section id="cli" class="docs">

@@ -19,6 +19,10 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@ekarya0x/cli": "^0.2.2",
+    "@ekarya0x/next-plugin": "^0.2.2",
+    "@ekarya0x/vite-plugin": "^0.2.2"
   }
 }
-
