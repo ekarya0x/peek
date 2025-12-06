@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { PeekCore, removeWorktree, getWorktreeInfo } from '@ekarya0x/middleware'
+import { PeekCore, removeWorktree, getWorktreeInfo, endSession, startTimer } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface DiscardOptions {
@@ -20,6 +20,7 @@ interface DiscardOptions {
  * 3. Deletes the agent branch
  */
 export async function discardCmd(opts: DiscardOptions): Promise<void> {
+  const timer = startTimer()
   const core = new PeekCore()
   const current = core.getCurrent()
   const main = core.getMain()
@@ -110,7 +111,10 @@ export async function discardCmd(opts: DiscardOptions): Promise<void> {
     console.log(`  ⚠ Branch not found or already deleted`)
   }
 
-  console.log('')
-  console.log(`✅ Agent work discarded.`)
-}
+  // Record session end
+  endSession(current, 'discarded')
 
+  const duration = timer.format()
+  console.log('')
+  console.log(`✅ Agent work discarded. (${duration})`)
+}

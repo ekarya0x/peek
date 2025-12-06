@@ -6,6 +6,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "test": "turbo run test",
+    "test:chaos": "vitest run --config vitest.config.ts",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "typecheck": "turbo run typecheck"

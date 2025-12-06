@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { PeekCore, removeWorktree, getWorktreeInfo } from '@ekarya0x/middleware'
+import { PeekCore, removeWorktree, getWorktreeInfo, endSession, startTimer } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface SaveOptions {
@@ -25,6 +25,7 @@ interface SaveOptions {
  * 4. Optionally removes the worktree
  */
 export async function saveCmd(opts: SaveOptions): Promise<void> {
+  const timer = startTimer()
   const core = new PeekCore()
   const current = core.getCurrent()
   const main = core.getMain()
@@ -60,7 +61,7 @@ export async function saveCmd(opts: SaveOptions): Promise<void> {
       
       console.log(`  ✓ Changes committed`)
     }
-  } catch (e) {
+  } catch {
     // No changes to commit - that's fine
   }
 
@@ -76,7 +77,7 @@ export async function saveCmd(opts: SaveOptions): Promise<void> {
       stdio: 'pipe'
     })
     console.log(`  ✓ Merged successfully`)
-  } catch (e) {
+  } catch {
     console.error(`\n❌ Merge conflict detected!`)
     console.error(`   Resolve conflicts manually, then run:`)
     console.error(`   peek remove ${current}`)
@@ -89,7 +90,7 @@ export async function saveCmd(opts: SaveOptions): Promise<void> {
     try {
       execSync('git push', { cwd: main, stdio: 'pipe' })
       console.log(`  ✓ Pushed`)
-    } catch (e) {
+    } catch {
       console.error(`  ⚠ Push failed - push manually`)
     }
   }
@@ -121,7 +122,10 @@ export async function saveCmd(opts: SaveOptions): Promise<void> {
     }
   }
 
-  console.log('')
-  console.log(`✅ Agent work saved!`)
-}
+  // Record session end
+  endSession(current, 'saved')
 
+  const duration = timer.format()
+  console.log('')
+  console.log(`✅ Agent work saved! (${duration})`)
+}

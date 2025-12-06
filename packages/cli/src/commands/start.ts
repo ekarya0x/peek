@@ -1,6 +1,13 @@
-import { join } from 'node:path'
 import { existsSync, mkdirSync } from 'node:fs'
-import { createWorktree, listWorktrees, isValidWorktree } from '@ekarya0x/middleware'
+import { 
+  createWorktree, 
+  listWorktrees, 
+  loadConfig,
+  generateWorktreeName,
+  getWorktreePath,
+  startSession,
+  startTimer
+} from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface StartOptions {
@@ -11,19 +18,15 @@ interface StartOptions {
 
 /**
  * Start a new isolated worktree session.
- * Names are slugged to `peek-<name>` under /tmp/peek.
+ * Names are slugged using config settings.
  */
 export async function startCmd(target: string, opts: StartOptions): Promise<void> {
-  const port = opts.port || '3000'
-  const nameInput = target.trim()
-  const slug = nameInput
-    .replace(/^[\\/]+|[\\/]+$/g, '')
-    .replace(/[^a-zA-Z0-9._-]+/g, '-')
-    .replace(/-+/g, '-')
-    .slice(0, 64) || 'work'
-
-  const branch = `peek-${slug}`
-  const worktreePath = opts.at ?? join('/tmp/peek', `peek-${slug}`)
+  const timer = startTimer()
+  const config = loadConfig()
+  const port = opts.port || process.env.PEEK_PORT || String(config.port)
+  
+  const branch = generateWorktreeName(target, config)
+  const worktreePath = opts.at ?? getWorktreePath(target, config)
 
   // Check if worktree already exists
   const worktrees = listWorktrees(process.cwd())
@@ -35,21 +38,21 @@ export async function startCmd(target: string, opts: StartOptions): Promise<void
   )
 
   if (existing) {
-    console.log(`Agent session already exists: ${existing.branch}`)
-    console.log(`Switching to existing worktree...`)
+    console.log(`\n🔄 Session already exists: ${existing.branch}`)
+    console.log(`   Switching to existing worktree...`)
     await switchCmd(existing.path, port)
     return
   }
 
-  // Ensure /tmp/peek exists
-  const peekDir = '/tmp/peek'
+  // Ensure worktree directory exists
+  const peekDir = config.worktreeDir
   if (!existsSync(peekDir)) {
     mkdirSync(peekDir, { recursive: true })
   }
 
   console.log(`\n🚀 Starting agent session: ${branch}`)
   console.log(`   Worktree: ${worktreePath}`)
-  if (opts.base) {
+  if (opts.base && opts.base !== 'HEAD') {
     console.log(`   Base: ${opts.base}`)
   }
   console.log('')
@@ -66,17 +69,22 @@ export async function startCmd(target: string, opts: StartOptions): Promise<void
     process.exit(1)
   }
 
+  // Record session start
+  startSession(worktreePath, branch)
+
   console.log(`✓ Worktree created`)
   console.log(`✓ Switching dev server...`)
   
   await switchCmd(worktreePath, port)
 
+  const duration = timer.format()
+
   console.log('')
-  console.log(`Agent session ready!`)
+  console.log(`✅ Agent session ready! (${duration})`)
   console.log(``)
   console.log(`  peek scope      # copy context for your agent`)
   console.log(`  peek save       # merge and keep changes`)
   console.log(`  peek discard    # abandon changes`)
   console.log(`  peek .          # back to main (keeps worktree)`)
+  console.log(`  peek -          # toggle between sessions`)
 }
-
