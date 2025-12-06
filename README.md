@@ -33,7 +33,7 @@ git stash && git checkout agent/feature-47 && npm run dev
 git checkout main && npm run dev && git stash pop
 ```
 
-At 20 reviews/day, that's **40 minutes lost**.
+At 20 reviews/day, that's hours wasted rather than productivity gained.
 
 ## The Solution
 
