@@ -93,6 +93,31 @@ peek ctx --depth 2           # Limit directory depth
 
 ---
 
+## Recovery Commands
+
+### `peek recover`
+Recover stashed changes from discarded sessions.
+
+When you run `peek discard` on a worktree with uncommitted changes, those changes are automatically stashed and can be recovered later.
+
+```bash
+peek recover                 # List recoverable stashes
+peek recover --apply <id>    # Apply stash to current worktree
+peek recover --drop <id>     # Delete a stash permanently
+peek recover --prune         # Remove stashes older than 7 days
+peek recover --apply <id> --all  # Apply but keep stash
+```
+
+**Typical workflow:**
+```bash
+peek discard                 # Auto-stashes uncommitted changes
+# ... later ...
+peek recover                 # See available stashes
+peek recover --apply stash-xxx  # Restore to current worktree
+```
+
+---
+
 ## Analytics Commands
 
 ### `peek lb` / `peek leaderboard`
@@ -226,6 +251,16 @@ peek doctor -v               # Verbose output
 
 ### `peek init`
 Initialize peek in current project.
+
+Creates:
+- `.peekrc.json` - Configuration template
+- `.peekignore` - Sharing strategy rules
+
+```bash
+peek init
+```
+
+Detects Vite/Next.js and shows framework-specific setup instructions.
 
 ### `peek completion <shell>`
 Generate shell completion script.

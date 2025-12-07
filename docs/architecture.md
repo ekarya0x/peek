@@ -180,11 +180,23 @@ ln -s /project/node_modules /tmp/peek/feature/node_modules
 ### .peekignore
 
 Control per-directory strategy:
+
 ```
-node_modules symlink
-.next skip
-dist skip
+# Format: <pattern> <strategy>
+# Strategies: symlink, hardlink, copy, skip
+
+node_modules symlink    # Link to main (instant, zero space)
+.next skip              # Don't copy (regenerated)
+dist skip               # Don't copy (build output)
+.turbo skip             # Cache, regenerated
+coverage skip           # Test artifacts
 ```
+
+Strategies explained:
+- **symlink** - Create symbolic link to source (instant, shared)
+- **hardlink** - Create hard links (same disk required, zero space)
+- **copy** - Full copy (slow, takes space)
+- **skip** - Don't include (fastest, for regenerable content)
 
 ---
 

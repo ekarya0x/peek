@@ -93,6 +93,8 @@ peek discard          # abandon worktree
 | `peek lb` | Agent leaderboard |
 | `peek diff a b` | Compare branches |
 | `peek doctor` | Diagnose + fix |
+| `peek recover` | Restore discarded work |
+| `peek init` | Setup project |
 
 [Full command reference →](docs/commands.md)
 
