@@ -1,6 +1,6 @@
 {
-  "name": "@ekarya0x/vite-plugin",
-  "version": "0.2.4",
+  "name": "@peektree/vite-plugin",
+  "version": "1.0.0",
   "description": "Vite plugin for peek - any agent, any branch, one command",
   "type": "module",
   "main": "./dist/index.js",
