@@ -6,4 +6,9 @@ dist/
 coverage/
 .env
 .env.local
+testing/peek-testbed/.next/
+testing/peek-testbed/apps/*/node_modules/
+testing/peek-testbed/apps/*/.next/
+testing/peek-testbed/apps/*/dist/
+testing/peek-testbed/pnpm-lock.yaml
 

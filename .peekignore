@@ -1,0 +1,9 @@
+*.lock
+node_modules
+dist
+.turbo
+.cache
+testing/peek-testbed/apps/*/.next
+testing/peek-testbed/apps/*/dist
+testing/peek-testbed/apps/*/node_modules
+
