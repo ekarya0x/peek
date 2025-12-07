@@ -8,6 +8,7 @@ import { createCmd } from './commands/create.js'
 import { removeCmd } from './commands/remove.js'
 import { cleanCmd } from './commands/clean.js'
 import { scopeCmd } from './commands/scope.js'
+import { recoverCmd } from './commands/recover.js'
 import { initCmd } from './commands/init.js'
 import { startCmd } from './commands/start.js'
 import { saveCmd } from './commands/save.js'
@@ -52,7 +53,7 @@ Federation (Multi-repo):
 
 Aliases:
   s=start, sw=switch, ls=list, st=status
-  c=create, rm=remove, ctx=scope
+  c=create, rm=remove, scope=ctx
   fed=federation, diff=compare, lb=leaderboard
 `)
 
@@ -139,12 +140,21 @@ program
   .action(statusCmd)
 
 program
-  .command('scope [path]')
-  .alias('ctx')
+  .command('ctx [path]')
+  .alias('scope')
   .description('Copy project context to clipboard (for AI)')
   .option('-o, --output', 'Print to stdout instead')
   .option('--depth <n>', 'Max directory depth', '4')
   .action(scopeCmd)
+
+program
+  .command('recover')
+  .description('Recover stashed changes from discarded sessions')
+  .option('--apply <id>', 'Apply stash to current worktree')
+  .option('--drop <id>', 'Delete a stash permanently')
+  .option('--prune', 'Remove stashes older than 7 days')
+  .option('--all', 'Keep stash after applying')
+  .action(recoverCmd)
 
 // ============================================
 // Agent Deathmatch Commands

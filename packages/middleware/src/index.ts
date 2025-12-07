@@ -146,3 +146,20 @@ export {
   inferPurpose,
   type WorktreeMetadata
 } from './metadata.js'
+export {
+  stashChanges,
+  listStashes,
+  getStash,
+  applyStash,
+  dropStash,
+  pruneStashes,
+  type StashEntry
+} from './stash.js'
+export {
+  loadShareRules,
+  getStrategy,
+  applyStrategy,
+  applyShareRules,
+  type ShareStrategy,
+  type ShareRule
+} from './sharing.js'

@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { PeekCore, removeWorktree, getWorktreeInfo, endSession, startTimer } from '@ekarya0x/middleware'
+import { PeekCore, removeWorktree, getWorktreeInfo, endSession, startTimer, stashChanges } from '@ekarya0x/middleware'
 import { switchCmd } from './switch.js'
 
 interface DiscardOptions {
@@ -72,6 +72,16 @@ export async function discardCmd(opts: DiscardOptions): Promise<void> {
 
   console.log(`\n🗑️  Discarding agent work: ${info.branch}`)
   console.log('')
+
+  // Step 0: Stash uncommitted changes (recoverable via `peek recover`)
+  try {
+    const stash = stashChanges(current, info.branch)
+    if (stash) {
+      console.log(`  📦 Stashed ${stash.files} file(s) (recoverable via \`peek recover\`)`)
+    }
+  } catch {
+    // Continue even if stash fails
+  }
 
   // Step 1: Switch to main first
   console.log(`  Switching to main...`)
