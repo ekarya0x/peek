@@ -28,17 +28,12 @@ Thumbs.db
 *.swp
 *.swo
 
-# Testing artifacts
-testing/peek-testbed/node_modules/
-testing/peek-testbed/pnpm-lock.yaml
-testing/peek-testbed/apps/*/node_modules/
-testing/peek-testbed/apps/*/.next/
-testing/peek-testbed/apps/*/dist/
-testing/peek-testbed/screenshots/
-
-# Internal testbed (future location)
+# Internal testbed
 internal/testbed/node_modules/
 internal/testbed/pnpm-lock.yaml
+internal/testbed/apps/*/node_modules/
+internal/testbed/apps/*/.next/
+internal/testbed/apps/*/dist/
 internal/testbed/screenshots/
 
 # Temporary files

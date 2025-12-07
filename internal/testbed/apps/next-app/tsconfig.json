@@ -1,0 +1,89 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "types": [
+      "node",
+      "react"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@peektree/banner": [
+        "../../../../packages/banner/src"
+      ],
+      "@peektree/banner/react": [
+        "../../../../packages/banner/src/react"
+      ],
+      "@peektree/next-plugin": [
+        "../../../../packages/next-plugin/src"
+      ],
+      "vite": [
+        "../../../../packages/vite-plugin/node_modules/vite"
+      ],
+      "vite/*": [
+        "../../../../packages/vite-plugin/node_modules/vite/*"
+      ],
+      "vite/client": [
+        "../../../../packages/vite-plugin/node_modules/vite/client.d.ts"
+      ],
+      "react": [
+        "../../../../packages/banner/node_modules/@types/react/index.d.ts"
+      ],
+      "react/jsx-runtime": [
+        "../../../../packages/banner/node_modules/@types/react/jsx-runtime.d.ts"
+      ],
+      "react-dom": [
+        "../../types/react-shim.d.ts"
+      ],
+      "react-dom/client": [
+        "../../types/react-shim.d.ts"
+      ],
+      "next": [
+        "../../../../packages/next-plugin/node_modules/next/types/index.d.ts"
+      ],
+      "next/*": [
+        "../../../../packages/next-plugin/node_modules/next/*"
+      ],
+      "@types/react": [
+        "../../../../packages/banner/node_modules/@types/react"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "../../../../packages/banner/node_modules/@types",
+      "../../../../packages/next-plugin/node_modules/@types",
+      "../../../../packages/vite-plugin/node_modules/@types",
+      "../../../../node_modules/@types"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "../../types/react-shim.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
