@@ -34,7 +34,6 @@ internal/testbed/pnpm-lock.yaml
 internal/testbed/apps/*/node_modules/
 internal/testbed/apps/*/.next/
 internal/testbed/apps/*/dist/
-internal/testbed/screenshots/
 
 # Temporary files
 /tmp/
