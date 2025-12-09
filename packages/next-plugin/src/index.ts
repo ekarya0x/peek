@@ -173,7 +173,7 @@ All paths relative to this root.
  * @example
  * ```ts
  * // next.config.ts
- * import withPeek from '@ekarya0x/next-plugin'
+ * import withPeek from '@peektree/next-plugin'
  * 
  * export default withPeek({
  *   port: 24789,

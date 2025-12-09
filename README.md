@@ -116,6 +116,19 @@ When you switch, the dev server points to a different folder. Same server, diffe
 
 ---
 
+## Browser Overlay
+
+When active, Peek shows an unobtrusive status bar in your app:
+
+- **Branch name**: Current worktree at a glance
+- **Back**: Return to main with one click
+- **Copy Scope**: Grab project context for AI agents
+- **Status**: HMR errors and switch confirmations
+
+The overlay is provided by `@peektree/banner` and included automatically with the Vite and Next plugins. Customize or eject if needed.
+
+---
+
 ## Config
 
 ```bash

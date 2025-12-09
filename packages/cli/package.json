@@ -14,7 +14,8 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "postinstall": "node -e \"console.log('\\n🎯 Peek installed. Run \\`npx peek init\\` to start.\\n')\""
   },
   "dependencies": {
     "@peektree/middleware": "workspace:*",

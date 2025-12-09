@@ -130,7 +130,7 @@
         <span class="step-num">1</span>
         <div class="step-content">
           <p>Install</p>
-          <pre><code>npm install -D @ekarya0x/cli @ekarya0x/vite-plugin</code></pre>
+          <pre><code>npm install -D @peektree/cli @peektree/vite-plugin</code></pre>
         </div>
       </div>
       <div class="step">
@@ -143,7 +143,7 @@
           </div>
           <div class="tab-content active" id="vite-config">
             <pre><code><span class="comment">// vite.config.ts</span>
-<span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@ekarya0x/vite-plugin'</span>
+<span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@peektree/vite-plugin'</span>
 
 <span class="kw">export default</span> {
   plugins: [peek()]
@@ -151,7 +151,7 @@
           </div>
           <div class="tab-content" id="next-config">
             <pre><code><span class="comment">// next.config.ts</span>
-<span class="kw">import</span> withPeek <span class="kw">from</span> <span class="str">'@ekarya0x/next-plugin'</span>
+<span class="kw">import</span> withPeek <span class="kw">from</span> <span class="str">'@peektree/next-plugin'</span>
 
 <span class="kw">export default</span> withPeek()({
   <span class="comment">// your config</span>
@@ -287,7 +287,7 @@
           </div>
           <h3>Vite</h3>
           <p>Full integration with HMR support</p>
-          <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@ekarya0x/vite-plugin'</span>
+          <pre><code><span class="kw">import</span> peek <span class="kw">from</span> <span class="str">'@peektree/vite-plugin'</span>
 
 <span class="kw">export default</span> {
   plugins: [peek({
@@ -305,7 +305,7 @@
           </div>
           <h3>Next.js</h3>
           <p>Works with App Router and Pages Router</p>
-          <pre><code><span class="kw">import</span> withPeek <span class="kw">from</span> <span class="str">'@ekarya0x/next-plugin'</span>
+          <pre><code><span class="kw">import</span> withPeek <span class="kw">from</span> <span class="str">'@peektree/next-plugin'</span>
 
 <span class="kw">export default</span> withPeek({
   port: <span class="num">24789</span>,

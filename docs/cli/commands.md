@@ -108,12 +108,16 @@ peek recover --prune         # Remove stashes older than 7 days
 peek recover --apply <id> --all  # Apply but keep stash
 ```
 
-**Typical workflow:**
+**Example — the safety net in action:**
 ```bash
-peek discard                 # Auto-stashes uncommitted changes
-# ... later ...
-peek recover                 # See available stashes
-peek recover --apply stash-xxx  # Restore to current worktree
+$ peek discard -f auth-fix
+⚠️  Changes stashed to stash-1733749200-a3f2
+
+$ peek recover
+  stash-1733749200-a3f2  auth-fix  3 files  2 min ago
+
+$ peek recover --apply stash-1733749200-a3f2
+✓ Restored 3 files, 127 lines
 ```
 
 ---

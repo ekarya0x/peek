@@ -1,18 +1,13 @@
-*.lock
-node_modules
-dist
-.turbo
-.cache
-internal/testbed/apps/*/.next
-internal/testbed/apps/*/dist
-internal/testbed/apps/*/node_modules
+# Dependencies and build outputs
+node_modules symlink
+dist skip
+.turbo skip
+.cache skip
+.next skip
+coverage skip
 
-*.lock
-node_modules
-dist
-.turbo
-.cache
-internal/testbed/apps/*/.next
-internal/testbed/apps/*/dist
-internal/testbed/apps/*/node_modules
+# Lockfiles (read-only, don't copy)
+*.lock skip
 
+# Internal testbed (separate workspace)
+internal/testbed skip

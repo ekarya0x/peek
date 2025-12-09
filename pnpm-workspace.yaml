@@ -1,6 +1,6 @@
 packages:
   - 'packages/*'
   - 'examples/*'
-  - 'internal/*'
+  # internal/testbed excluded - standalone testing workspace with nested pnpm
   # docs/site excluded - standalone landing page
 
