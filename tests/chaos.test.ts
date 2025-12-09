@@ -11,10 +11,11 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { execSync, spawn, ChildProcess } from 'node:child_process'
+import { execSync, spawn } from 'node:child_process'
 import { existsSync, mkdirSync, rmSync, writeFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { getWorktreePath, loadConfig } from '../packages/middleware/src/config.ts'
 
 const TEST_DIR = join(tmpdir(), 'peek-chaos-tests')
 const PEEK_CLI = join(process.cwd(), 'packages/cli/dist/index.js')
@@ -113,7 +114,11 @@ describe('Chaos Tests', () => {
       // Create a worktree then delete the directory manually
       runPeek(['start', 'orphan-test'], TEST_DIR)
       
-      const worktreePath = join(tmpdir(), 'peek', 'peek-orphan-test')
+      const originalHome = process.env.HOME
+      process.env.HOME = TEST_DIR
+      const worktreePath = getWorktreePath('orphan-test', loadConfig(TEST_DIR))
+      process.env.HOME = originalHome
+
       if (existsSync(worktreePath)) {
         rmSync(worktreePath, { recursive: true, force: true })
       }

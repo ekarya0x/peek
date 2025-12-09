@@ -20,6 +20,7 @@ export interface StashEntry {
   timestamp: number
   message: string
   files: number
+  repoPath?: string
   gitStashRef?: string
 }
 
@@ -73,10 +74,13 @@ export function stashChanges(worktreePath: string, branch: string): StashEntry |
     
     const gitStashRef = stashList.split(' ')[0]
 
+    const repoPath = getRepoPath(worktreePath)
+
     const entry: StashEntry = {
       id,
       branch,
       worktreePath,
+      repoPath,
       timestamp: Date.now(),
       message,
       files,
@@ -113,12 +117,21 @@ export function getStash(id: string): StashEntry | null {
  */
 export function applyStash(id: string, targetPath: string): boolean {
   const entry = getStash(id)
-  if (!entry?.gitStashRef) return false
+  if (!entry?.gitStashRef || !existsSync(targetPath)) return false
 
   try {
-    // Create a patch from the stash and apply it
-    execSync(`git stash show -p ${entry.gitStashRef} | git apply --directory="${targetPath}"`, {
-      stdio: 'pipe'
+    const repoCwd = resolveRepoPath(entry, targetPath)
+    const patch = execSync(`git stash show -p ${entry.gitStashRef}`, {
+      cwd: repoCwd,
+      encoding: 'utf8',
+      maxBuffer: 10 * 1024 * 1024
+    })
+
+    execSync(`git apply --directory="${targetPath}"`, {
+      cwd: repoCwd,
+      input: patch,
+      stdio: 'pipe',
+      maxBuffer: 10 * 1024 * 1024
     })
     return true
   } catch {
@@ -131,9 +144,21 @@ export function applyStash(id: string, targetPath: string): boolean {
  */
 export function dropStash(id: string): boolean {
   const index = loadIndex()
-  const filtered = index.filter(e => e.id !== id)
-  if (filtered.length === index.length) return false
-  saveIndex(filtered)
+  const entry = index.find(e => e.id === id)
+  if (!entry) return false
+
+  try {
+    if (entry.gitStashRef) {
+      execSync(`git stash drop ${entry.gitStashRef}`, {
+        cwd: resolveRepoPath(entry, entry.worktreePath),
+        stdio: 'pipe'
+      })
+    }
+  } catch {
+    // Ignore drop failures but still clean index
+  }
+
+  saveIndex(index.filter(e => e.id !== id))
   return true
 }
 
@@ -143,9 +168,44 @@ export function dropStash(id: string): boolean {
 export function pruneStashes(maxAge: number = 7 * 24 * 60 * 60 * 1000): number {
   const cutoff = Date.now() - maxAge
   const index = loadIndex()
-  const filtered = index.filter(e => e.timestamp > cutoff)
-  const removed = index.length - filtered.length
-  saveIndex(filtered)
+  const toKeep: StashEntry[] = []
+  let removed = 0
+
+  for (const entry of index) {
+    if (entry.timestamp > cutoff) {
+      toKeep.push(entry)
+      continue
+    }
+
+    removed++
+    try {
+      if (entry.gitStashRef) {
+        execSync(`git stash drop ${entry.gitStashRef}`, {
+          cwd: resolveRepoPath(entry, entry.worktreePath),
+          stdio: 'pipe'
+        })
+      }
+    } catch {
+      // Swallow drop errors; index will still be cleaned
+    }
+  }
+
+  saveIndex(toKeep)
   return removed
+}
+
+function getRepoPath(cwd: string): string {
+  try {
+    return execSync('git rev-parse --show-toplevel', { cwd, encoding: 'utf8' }).trim()
+  } catch {
+    return cwd
+  }
+}
+
+function resolveRepoPath(entry: StashEntry, fallback: string): string {
+  if (entry.repoPath && existsSync(entry.repoPath)) return entry.repoPath
+  if (existsSync(entry.worktreePath)) return getRepoPath(entry.worktreePath)
+  if (existsSync(fallback)) return fallback
+  return process.cwd()
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@peektree/next-plugin",
-  "version": "1.0.0",
+  "version": "0.4.2",
   "description": "Next.js plugin for peek - live worktree switching",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,7 +20,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@ekarya0x/middleware": "workspace:*",
+    "@peektree/middleware": "workspace:*",
     "ws": "^8.16.0"
   },
   "devDependencies": {

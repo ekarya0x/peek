@@ -1,4 +1,4 @@
-import { loadMetrics, clearMetrics, getMetricsSummary } from '@ekarya0x/middleware'
+import { loadMetrics, clearMetrics, getMetricsSummary } from '@peektree/middleware'
 
 interface MetricsOptions {
   json?: boolean

@@ -5,11 +5,12 @@
  * are handled when creating worktrees.
  */
 
-import { existsSync, readFileSync, symlinkSync, cpSync, linkSync, readdirSync, statSync, mkdirSync } from 'node:fs'
-import { join, dirname } from 'node:path'
+import { existsSync, readFileSync, symlinkSync, cpSync, linkSync, readdirSync, statSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join, dirname, resolve } from 'node:path'
 import { execSync } from 'node:child_process'
 
-export type ShareStrategy = 'symlink' | 'hardlink' | 'copy' | 'skip'
+export type ShareStrategy = 'symlink' | 'hardlink' | 'copy' | 'skip' | 'reflink'
 
 export interface ShareRule {
   pattern: string
@@ -23,6 +24,11 @@ const DEFAULT_RULES: ShareRule[] = [
   { pattern: '.turbo', strategy: 'skip' },
   { pattern: 'coverage', strategy: 'skip' }
 ]
+
+const LOCKFILES = ['pnpm-lock.yaml', 'package-lock.json', 'yarn.lock']
+
+let hardlinkCapable: boolean | null = null
+let reflinkCapable: boolean | null = null
 
 /**
  * Load .peekignore rules from project root
@@ -57,7 +63,7 @@ export function loadShareRules(projectRoot: string): ShareRule[] {
 }
 
 function isValidStrategy(s: string): boolean {
-  return ['symlink', 'hardlink', 'copy', 'skip'].includes(s)
+  return ['symlink', 'hardlink', 'copy', 'skip', 'reflink'].includes(s)
 }
 
 /**
@@ -88,8 +94,24 @@ export function applyStrategy(
         symlinkSync(sourcePath, targetPath)
         return { success: true }
 
+      case 'reflink':
+        if (!existsSync(sourcePath)) return { success: true }
+        if (!isReflinkSupported()) {
+          return { success: false, error: 'Reflinks not supported on this filesystem' }
+        }
+        mkdirSync(dirname(targetPath), { recursive: true })
+        try {
+          execSync(`cp --reflink=always -R "${sourcePath}" "${targetPath}"`, { stdio: 'pipe' })
+          return { success: true }
+        } catch (err) {
+          return { success: false, error: String(err) }
+        }
+
       case 'hardlink':
         if (!existsSync(sourcePath)) return { success: true }
+        if (!isHardlinkSupported(sourcePath, targetPath)) {
+          return { success: false, error: 'Hardlinks unsupported across devices or filesystem' }
+        }
         return hardlinkDir(sourcePath, targetPath)
 
       case 'copy':
@@ -150,10 +172,17 @@ export function applyShareRules(
   let applied = 0
   let skipped = 0
   const errors: string[] = []
+  const lockMismatch = detectLockfileMismatch(mainRepo, worktreePath)
 
   for (const rule of shareRules) {
     const sourcePath = join(mainRepo, rule.pattern)
     const targetPath = join(worktreePath, rule.pattern)
+
+    if (rule.pattern === 'node_modules' && lockMismatch) {
+      errors.push(`node_modules: lockfile mismatch (${lockMismatch}); use copy/install instead`)
+      skipped++
+      continue
+    }
 
     if (rule.strategy === 'skip') {
       skipped++
@@ -174,5 +203,48 @@ export function applyShareRules(
   }
 
   return { applied, skipped, errors }
+}
+
+function detectLockfileMismatch(mainRepo: string, worktreePath: string): string | null {
+  for (const name of LOCKFILES) {
+    const mainLock = join(mainRepo, name)
+    const worktreeLock = join(worktreePath, name)
+    if (existsSync(mainLock) && existsSync(worktreeLock)) {
+      const a = readFileSync(mainLock, 'utf8')
+      const b = readFileSync(worktreeLock, 'utf8')
+      if (a !== b) return name
+    }
+  }
+  return null
+}
+
+function isHardlinkSupported(sourcePath: string, targetPath: string): boolean {
+  if (hardlinkCapable !== null) return hardlinkCapable
+  const tmp = mkdtempSync(join(tmpdir(), 'peek-hardlink-'))
+  try {
+    const src = join(tmp, 'src')
+    const dst = join(tmp, 'dst')
+    writeFileSync(src, 'peek')
+    linkSync(src, dst)
+    hardlinkCapable = true
+  } catch {
+    hardlinkCapable = false
+  }
+  return hardlinkCapable
+}
+
+function isReflinkSupported(): boolean {
+  if (reflinkCapable !== null) return reflinkCapable
+  const tmp = mkdtempSync(join(tmpdir(), 'peek-reflink-'))
+  const src = join(tmp, 'src')
+  const dst = join(tmp, 'dst')
+  try {
+    writeFileSync(src, 'peek')
+    execSync(`cp --reflink=always "${src}" "${dst}"`, { stdio: 'pipe' })
+    reflinkCapable = true
+  } catch {
+    reflinkCapable = false
+  }
+  return reflinkCapable
 }
 

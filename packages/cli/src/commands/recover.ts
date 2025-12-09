@@ -6,7 +6,7 @@ import {
   applyStash, 
   dropStash, 
   pruneStashes 
-} from '@ekarya0x/middleware'
+} from '@peektree/middleware'
 
 interface RecoverOptions {
   apply?: string

@@ -1,6 +1,6 @@
 {
   "name": "@peektree/banner",
-  "version": "1.0.0",
+  "version": "0.4.2",
   "description": "UI banner component for peek",
   "type": "module",
   "main": "./dist/index.js",

@@ -32,7 +32,7 @@ const program = new Command()
 program
   .name('peek')
   .description('The parallel reality engine for your codebase. Any agent, any branch, any project — one command.')
-  .version('1.0.0')
+  .version('0.4.2')
   .showHelpAfterError('(see `peek --help` for usage)')
   .showSuggestionAfterError(true)
 
@@ -276,6 +276,7 @@ program
   .description('Run diagnostics and fix common issues')
   .option('-f, --fix', 'Auto-fix issues where possible')
   .option('-v, --verbose', 'Show detailed output')
+  .option('-j, --json', 'Output as JSON')
   .action(doctorCmd)
 
 // ============================================

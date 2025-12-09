@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { listWorktrees, getWorktreeInfo, loadMetrics } from '@ekarya0x/middleware'
+import { listWorktrees, getWorktreeInfo, loadMetrics } from '@peektree/middleware'
 
 interface CompareOptions {
   stat?: boolean

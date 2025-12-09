@@ -1,6 +1,6 @@
 {
   "name": "@peektree/cli",
-  "version": "1.0.0",
+  "version": "0.4.2",
   "description": "Any agent, any branch, one command - CLI for peek",
   "type": "module",
   "bin": {
@@ -17,7 +17,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@ekarya0x/middleware": "workspace:*",
+    "@peektree/middleware": "workspace:*",
     "commander": "^12.0.0"
   },
   "devDependencies": {

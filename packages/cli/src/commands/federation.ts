@@ -6,7 +6,7 @@ import {
   federationUnmount,
   federationSwitch,
   federationGetScope
-} from '@ekarya0x/middleware'
+} from '@peektree/middleware'
 
 interface LinkOptions {
   alias?: string

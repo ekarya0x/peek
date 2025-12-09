@@ -1,4 +1,4 @@
-import { listWorktrees, getMetadata, formatMetadata } from '@ekarya0x/middleware'
+import { listWorktrees, getMetadata, formatMetadata } from '@peektree/middleware'
 
 const NATIVE = process.env.PEEK_NATIVE === '1'
 

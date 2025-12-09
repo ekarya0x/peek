@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { PeekCore, removeWorktree, getWorktreeInfo, endSession, startTimer } from '@ekarya0x/middleware'
+import { PeekCore, removeWorktree, getWorktreeInfo, endSession, startTimer } from '@peektree/middleware'
 import { switchCmd } from './switch.js'
 
 interface SaveOptions {

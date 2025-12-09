@@ -5,7 +5,7 @@
 <h1 align="center">peek</h1>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@ekarya0x/cli"><img src="https://img.shields.io/npm/v/@ekarya0x/cli?style=flat&colorA=0a0a0a&colorB=4f46e5" alt="npm" /></a>
+<a href="https://www.npmjs.com/package/@peektree/cli"><img src="https://img.shields.io/npm/v/@peektree/cli?style=flat&colorA=0a0a0a&colorB=4f46e5" alt="npm" /></a>
   <a href="https://github.com/ekarya0x/peek/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-0a0a0a?style=flat&colorB=4f46e5" alt="license" /></a>
 </p>
 
@@ -42,23 +42,23 @@ Switch takes **87ms**. No stash. No restart. Browser hot-reloads.
 ## Install
 
 ```bash
-npm i -D @ekarya0x/cli @ekarya0x/vite-plugin
+npm i -D @peektree/cli @peektree/vite-plugin
 ```
 
 ```ts
 // vite.config.ts
-import peek from '@ekarya0x/vite-plugin'
+import peek from '@peektree/vite-plugin'
 export default { plugins: [peek()] }
 ```
 
 For Next.js:
 ```bash
-npm i -D @ekarya0x/cli @ekarya0x/next-plugin
+npm i -D @peektree/cli @peektree/next-plugin
 ```
 
 ```ts
 // next.config.ts
-import withPeek from '@ekarya0x/next-plugin'
+import withPeek from '@peektree/next-plugin'
 export default withPeek()({})
 ```
 
@@ -96,7 +96,7 @@ peek discard          # abandon worktree
 | `peek recover` | Restore discarded work |
 | `peek init` | Setup project |
 
-[Full command reference →](docs/commands.md)
+[Full command reference →](docs/cli/commands.md) • [Workflows →](docs/cli/workflows.md) • [Error codes →](docs/cli/errors.md)
 
 ---
 
@@ -112,7 +112,7 @@ Peek uses git worktrees. Each branch gets its own folder:
 
 When you switch, the dev server points to a different folder. Same server, different code.
 
-[Architecture details →](docs/architecture.md)
+[Architecture details →](docs/architecture.md) • [Peek Manifesto →](docs/design/peek-manifesto.md)
 
 ---
 
@@ -127,6 +127,10 @@ Or `~/.config/peek/config.json`:
 ```json
 { "port": 3000, "worktreeDir": "/tmp/peek" }
 ```
+
+Templates live in `templates/`:
+- `.peekrc.json` sample: layered config defaults
+- `.peekignore` sample: sharing strategies per path
 
 ---
 

@@ -9,11 +9,12 @@ import {
   getStateManager,
   checkLock,
   forceReleaseLock
-} from '@ekarya0x/middleware'
+} from '@peektree/middleware'
 
 interface DoctorOptions {
   fix?: boolean
   verbose?: boolean
+  json?: boolean
 }
 
 export interface DiagnosticIssue {
@@ -30,9 +31,15 @@ export interface DiagnosticIssue {
 export async function doctorCmd(opts: DoctorOptions): Promise<void> {
   const issues: DiagnosticIssue[] = []
   const fixes: string[] = []
+  const checks: { name: string; passed: boolean; detail?: string }[] = []
 
-  console.log('🩺 Peek Doctor\n')
-  console.log('Running diagnostics...\n')
+  const log = (...args: unknown[]) => {
+    if (opts.json) return
+    console.log(...args)
+  }
+
+  log('🩺 Peek Doctor\n')
+  log('Running diagnostics...\n')
 
   // Check 1: Git version
   const gitCompat = checkGitCompatibility()
@@ -52,12 +59,14 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
       autoFixable: false
     })
   }
-  printCheck('Git version', gitCompat.errors.length === 0, gitCompat.version.raw)
+  checks.push({ name: 'Git version', passed: gitCompat.errors.length === 0, detail: gitCompat.version.raw })
+  if (!opts.json) printCheck('Git version', gitCompat.errors.length === 0, gitCompat.version.raw)
 
   // Check 2: Worktree health
   const worktreeIssues = await checkWorktrees()
   issues.push(...worktreeIssues)
-  printCheck('Worktree health', worktreeIssues.filter(i => i.level === 'error').length === 0)
+  checks.push({ name: 'Worktree health', passed: worktreeIssues.filter(i => i.level === 'error').length === 0 })
+  if (!opts.json) printCheck('Worktree health', worktreeIssues.filter(i => i.level === 'error').length === 0)
 
   // Check 3: Lock state
   const lockInfo = checkLock()
@@ -82,7 +91,8 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
       })
     }
   }
-  printCheck('Lock state', !lockInfo || lockInfo.pid === process.pid)
+  checks.push({ name: 'Lock state', passed: !lockInfo || lockInfo.pid === process.pid })
+  if (!opts.json) printCheck('Lock state', !lockInfo || lockInfo.pid === process.pid)
 
   // Check 4: Pending transactions (crash recovery)
   const stateManager = getStateManager()
@@ -96,7 +106,8 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
       autoFixable: true
     })
   }
-  printCheck('Transaction log', pending.length === 0)
+  checks.push({ name: 'Transaction log', passed: pending.length === 0 })
+  if (!opts.json) printCheck('Transaction log', pending.length === 0)
 
   // Check 5: Config validity
   try {
@@ -110,7 +121,8 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
         autoFixable: true
       })
     }
-    printCheck('Config validity', true)
+    checks.push({ name: 'Config validity', passed: true })
+    if (!opts.json) printCheck('Config validity', true)
   } catch (e) {
     issues.push({
       code: 'PEEK-031',
@@ -119,7 +131,8 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
       fix: 'rm ~/.config/peek/config.json',
       autoFixable: true
     })
-    printCheck('Config validity', false)
+    checks.push({ name: 'Config validity', passed: false })
+    if (!opts.json) printCheck('Config validity', false)
   }
 
   // Check 6: Disk space
@@ -139,54 +152,63 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
       autoFixable: false
     })
   }
-  printCheck('Disk space', diskSpace.freePercent >= 10, `${diskSpace.freePercent.toFixed(1)}% free`)
+  checks.push({ name: 'Disk space', passed: diskSpace.freePercent >= 10, detail: `${diskSpace.freePercent.toFixed(1)}% free` })
+  if (!opts.json) printCheck('Disk space', diskSpace.freePercent >= 10, `${diskSpace.freePercent.toFixed(1)}% free`)
 
   // Check 7: Port availability
   const portIssues = await checkPorts()
   issues.push(...portIssues)
-  printCheck('Port availability', portIssues.length === 0)
+  checks.push({ name: 'Port availability', passed: portIssues.length === 0 })
+  if (!opts.json) printCheck('Port availability', portIssues.length === 0)
 
   // Check 8: Federation health
   const fedIssues = checkFederation()
   issues.push(...fedIssues)
-  printCheck('Federation health', fedIssues.filter(i => i.level === 'error').length === 0)
+  checks.push({ name: 'Federation health', passed: fedIssues.filter(i => i.level === 'error').length === 0 })
+  if (!opts.json) printCheck('Federation health', fedIssues.filter(i => i.level === 'error').length === 0)
 
-  console.log('')
+  log('')
 
   // Summary
   const errors = issues.filter(i => i.level === 'error')
   const warnings = issues.filter(i => i.level === 'warn')
 
+  if (opts.json) {
+    const ok = errors.length === 0
+    console.log(JSON.stringify({ ok, errors, warnings, checks }, null, 2))
+    return
+  }
+
   if (errors.length === 0 && warnings.length === 0) {
-    console.log('✅ All checks passed!\n')
+    log('✅ All checks passed!\n')
     return
   }
 
   // Print issues
   if (errors.length > 0) {
-    console.log(`❌ ${errors.length} error(s):\n`)
+    log(`❌ ${errors.length} error(s):\n`)
     for (const issue of errors) {
-      console.log(`  [${issue.code}] ${issue.message}`)
+      log(`  [${issue.code}] ${issue.message}`)
       if (issue.fix) {
-        console.log(`    Fix: ${issue.fix}`)
+        log(`    Fix: ${issue.fix}`)
       }
     }
-    console.log('')
+    log('')
   }
 
   if (warnings.length > 0) {
-    console.log(`⚠️  ${warnings.length} warning(s):\n`)
+    log(`⚠️  ${warnings.length} warning(s):\n`)
     for (const issue of warnings) {
-      console.log(`  [${issue.code}] ${issue.message}`)
+      log(`  [${issue.code}] ${issue.message}`)
       if (issue.fix) {
-        console.log(`    Fix: ${issue.fix}`)
+        log(`    Fix: ${issue.fix}`)
       }
     }
-    console.log('')
+    log('')
   }
 
   // Auto-fix if requested
-  if (opts.fix) {
+  if (opts.fix && !opts.json) {
     console.log('🔧 Attempting auto-fix...\n')
     
     for (const issue of issues) {
@@ -210,7 +232,7 @@ export async function doctorCmd(opts: DoctorOptions): Promise<void> {
     } else {
       console.log('No auto-fixable issues found.')
     }
-  } else if (issues.some(i => i.autoFixable)) {
+  } else if (!opts.json && issues.some(i => i.autoFixable)) {
     console.log('💡 Some issues can be auto-fixed. Run: peek doctor --fix')
   }
 }

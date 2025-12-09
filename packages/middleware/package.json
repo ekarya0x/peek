@@ -1,6 +1,6 @@
 {
   "name": "@peektree/middleware",
-  "version": "1.0.0",
+  "version": "0.4.2",
   "description": "Core worktree switching logic for peek - any agent, any branch, one command",
   "type": "module",
   "main": "./dist/index.js",

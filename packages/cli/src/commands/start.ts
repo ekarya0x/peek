@@ -7,7 +7,7 @@ import {
   getWorktreePath,
   startSession,
   startTimer
-} from '@ekarya0x/middleware'
+} from '@peektree/middleware'
 import { switchCmd } from './switch.js'
 
 interface StartOptions {

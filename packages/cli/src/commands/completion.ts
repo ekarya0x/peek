@@ -1,4 +1,4 @@
-import { listWorktrees, federationList, loadConfig } from '@ekarya0x/middleware'
+import { listWorktrees, federationList, loadConfig } from '@peektree/middleware'
 
 /**
  * Generate shell completion script

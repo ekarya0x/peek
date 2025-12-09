@@ -1,5 +1,5 @@
 import type { NextConfig } from 'next'
-import { PeekCore } from '@ekarya0x/middleware'
+import { PeekCore } from '@peektree/middleware'
 import { WebSocketServer, WebSocket } from 'ws'
 import { join, resolve } from 'node:path'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'

@@ -21,7 +21,7 @@ Each worktree is a full working copy that shares git objects with the main repo.
 
 ## System Components
 
-### 1. CLI (`@ekarya0x/cli`)
+### 1. CLI (`@peektree/cli`)
 
 The command-line interface that orchestrates everything:
 
@@ -36,7 +36,7 @@ The command-line interface that orchestrates everything:
 └─────────────────────────────────────────┘
 ```
 
-### 2. Middleware (`@ekarya0x/middleware`)
+### 2. Middleware (`@peektree/middleware`)
 
 Core library with all the logic:
 
@@ -56,7 +56,7 @@ Core library with all the logic:
 └─────────────────────────────────────────┘
 ```
 
-### 3. Plugins (`@ekarya0x/vite-plugin`, `@ekarya0x/next-plugin`)
+### 3. Plugins (`@peektree/vite-plugin`, `@peektree/next-plugin`)
 
 Framework integrations that enable hot-swapping:
 
@@ -71,7 +71,7 @@ Framework integrations that enable hot-swapping:
 └─────────────────────────────────────────┘
 ```
 
-### 4. Banner (`@ekarya0x/banner`)
+### 4. Banner (`@peektree/banner`)
 
 Visual indicator showing current worktree:
 

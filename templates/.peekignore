@@ -1,0 +1,9 @@
+*.lock
+node_modules
+dist
+.turbo
+.cache
+internal/testbed/apps/*/.next
+internal/testbed/apps/*/dist
+internal/testbed/apps/*/node_modules
+

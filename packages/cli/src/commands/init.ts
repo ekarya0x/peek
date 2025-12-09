@@ -62,14 +62,14 @@ export async function initCmd(): Promise<void> {
     console.log('Detected: Vite\n')
     console.log('Add to vite.config.ts:')
     console.log('')
-    console.log('  import peek from \'@ekarya0x/vite-plugin\'')
+    console.log('  import peek from \'@peektree/vite-plugin\'')
     console.log('')
     console.log('  export default defineConfig({')
     console.log('    plugins: [peek()]')
     console.log('  })')
     console.log('')
     console.log('Install:')
-    console.log('  pnpm add -D @ekarya0x/cli @ekarya0x/vite-plugin')
+    console.log('  pnpm add -D @peektree/cli @peektree/vite-plugin')
     return
   }
 
@@ -77,12 +77,12 @@ export async function initCmd(): Promise<void> {
     console.log('Detected: Next.js\n')
     console.log('Update next.config.ts:')
     console.log('')
-    console.log('  import withPeek from \'@ekarya0x/next-plugin\'')
+    console.log('  import withPeek from \'@peektree/next-plugin\'')
     console.log('')
     console.log('  export default withPeek()(nextConfig)')
     console.log('')
     console.log('Install:')
-    console.log('  pnpm add -D @ekarya0x/cli @ekarya0x/next-plugin')
+    console.log('  pnpm add -D @peektree/cli @peektree/next-plugin')
     return
   }
 
@@ -90,7 +90,7 @@ export async function initCmd(): Promise<void> {
   console.log('Supported: Vite, Next.js')
   console.log('')
   console.log('Install CLI only:')
-  console.log('  pnpm add -D @ekarya0x/cli')
+  console.log('  pnpm add -D @peektree/cli')
 }
 
 function findConfig(dir: string, names: string[]): string | null {
