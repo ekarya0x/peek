@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd docs/site && npm install && npm run build",
-  "outputDirectory": "docs/site/dist",
+  "buildCommand": "cd site && npm install && npm run build",
+  "outputDirectory": "site/dist",
   "framework": null,
-  "installCommand": "npm install --prefix docs/site"
+  "installCommand": "echo 'Install handled in buildCommand'"
 }
 
