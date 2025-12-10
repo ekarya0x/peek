@@ -47,11 +47,11 @@ peek/
 
 | Package | Description |
 |---------|-------------|
-| `@ekarya0x/cli` | CLI commands (`peek start`, `peek save`, etc.) |
-| `@ekarya0x/middleware` | Core logic for worktree switching |
-| `@ekarya0x/vite-plugin` | Vite plugin with HMR integration |
-| `@ekarya0x/next-plugin` | Next.js plugin |
-| `@ekarya0x/banner` | UI banner for development |
+| `@peektree/cli` | CLI commands (`peek start`, `peek save`, etc.) |
+| `@peektree/middleware` | Core logic for worktree switching |
+| `@peektree/vite-plugin` | Vite plugin with HMR integration |
+| `@peektree/next-plugin` | Next.js plugin |
+| `@peektree/banner` | UI banner for development |
 
 ## Development Workflow
 
