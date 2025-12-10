@@ -38,3 +38,4 @@ internal/testbed/apps/*/dist/
 # Temporary files
 /tmp/
 *.tmp
+docs/site/package-lock.json
