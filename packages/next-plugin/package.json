@@ -11,7 +11,9 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -21,7 +23,7 @@
   },
   "dependencies": {
     "@peektree/middleware": "workspace:*",
-    "ws": "^8.16.0"
+    "ws": "^8.21.0"
   },
   "devDependencies": {
     "@types/ws": "^8.5.10",
@@ -50,4 +52,3 @@
   },
   "bugs": "https://github.com/ekarya0x/peek/issues"
 }
-
