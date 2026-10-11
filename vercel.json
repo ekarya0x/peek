@@ -6,7 +6,7 @@
   "installCommand": "cd site && npm ci --no-audit --no-fund",
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "X-Content-Type-Options",
