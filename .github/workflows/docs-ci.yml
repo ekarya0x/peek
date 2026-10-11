@@ -1,10 +1,10 @@
 name: Documentation hosting
 on:
   pull_request:
-    paths: ['docs/site/**', 'vercel.json', '.github/workflows/docs-ci.yml']
+    paths: ['docs/site/**', 'vercel.json', 'docs/vercel.json', '.github/workflows/docs-ci.yml']
   push:
     branches: [master]
-    paths: ['docs/site/**', 'vercel.json', '.github/workflows/docs-ci.yml']
+    paths: ['docs/site/**', 'vercel.json', 'docs/vercel.json', '.github/workflows/docs-ci.yml']
 permissions:
   contents: read
 jobs:
