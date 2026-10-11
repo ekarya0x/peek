@@ -1,8 +1,26 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd site && npm install && npm run build",
+  "buildCommand": "cd site && npm run build",
   "outputDirectory": "site/dist",
   "framework": null,
-  "installCommand": "echo 'Install handled in buildCommand'"
+  "installCommand": "cd site && npm ci --no-audit --no-fund",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    }
+  ]
 }
-

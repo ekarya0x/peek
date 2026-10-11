@@ -1,0 +1,25 @@
+name: Documentation hosting
+on:
+  pull_request:
+    paths: ['docs/site/**', 'vercel.json', '.github/workflows/docs-ci.yml']
+  push:
+    branches: [master]
+    paths: ['docs/site/**', 'vercel.json', '.github/workflows/docs-ci.yml']
+permissions:
+  contents: read
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs/site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: docs/site/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: npm audit --audit-level=moderate
