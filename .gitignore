@@ -38,4 +38,4 @@ internal/testbed/apps/*/dist/
 # Temporary files
 /tmp/
 *.tmp
-docs/site/package-lock.json
+# The standalone docs site uses npm ci and commits its own lockfile.
