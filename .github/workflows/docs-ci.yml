@@ -22,4 +22,5 @@ jobs:
           cache-dependency-path: docs/site/package-lock.json
       - run: npm ci --no-audit --no-fund
       - run: npm run build
+      - run: node -e "const c=require('../.vercel/output/config.json');if(c.routes[0].headers['X-Content-Type-Options']!=='nosniff')process.exit(1)"
       - run: npm audit --audit-level=moderate
