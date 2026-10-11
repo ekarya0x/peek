@@ -89,8 +89,8 @@ importers:
         specifier: workspace:*
         version: link:../middleware
       ws:
-        specifier: ^8.16.0
-        version: 8.18.3
+        specifier: ^8.21.0
+        version: 8.21.0
     devDependencies:
       '@types/ws':
         specifier: ^8.5.10
@@ -108,8 +108,8 @@ importers:
         specifier: workspace:*
         version: link:../middleware
       ws:
-        specifier: ^8.16.0
-        version: 8.18.3
+        specifier: ^8.21.0
+        version: 8.21.0
     devDependencies:
       '@types/ws':
         specifier: ^8.5.10
@@ -779,6 +779,7 @@ packages:
   next@14.2.33:
     resolution: {integrity: sha512-GiKHLsD00t4ACm1p00VgrI0rUFAC9cRDGReKyERlM57aeEZkOQGcZTpIbsGn0b562FTPJWmYfKwplfO9EaT6ng==}
     engines: {node: '>=18.17.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -1061,8 +1062,8 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
-  ws@8.18.3:
-    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
+  ws@8.21.0:
+    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -1921,7 +1922,7 @@ snapshots:
       siginfo: 2.0.0
       stackback: 0.0.2
 
-  ws@8.18.3: {}
+  ws@8.21.0: {}
 
   yallist@3.1.1: {}
 
